@@ -24,7 +24,7 @@ Por padrao, a API usa a porta `3001`.
 As configuracoes ficam no arquivo `.env`, criado localmente a partir de `.env.example`.
 Nao coloque senhas reais no codigo-fonte.
 
-## Rota de teste
+## Rotas de teste
 
 ```text
 GET /api/health
@@ -39,6 +39,38 @@ Resposta esperada:
 }
 ```
 
+```text
+GET /api/db/health
+```
+
+Testa a conexao com o MySQL usando o pool configurado em `src/config/database.js`.
+
+Resposta esperada em sucesso:
+
+```json
+{
+  "status": "ok",
+  "database": "connected"
+}
+```
+
+Resposta esperada em falha:
+
+```json
+{
+  "status": "error",
+  "database": "unavailable"
+}
+```
+
+Para testar localmente:
+
+```bash
+npm run dev
+curl http://localhost:3001/api/health
+curl http://localhost:3001/api/db/health
+```
+
 ## Escopo desta etapa
 
-Esta base prepara a estrutura do servidor, rotas, middlewares, tratamento de erros e conexao futura com MySQL. Login, cadastro, posts, noticias RSS e autenticacao ainda nao foram implementados.
+Esta base prepara a estrutura do servidor, rotas, middlewares, tratamento de erros e conexao com MySQL. Login, cadastro, posts, noticias RSS e autenticacao ainda nao foram implementados.
