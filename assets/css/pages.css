@@ -1,0 +1,158 @@
+.page-hero {
+	background: var(--autos-soft);
+	padding: 8.5rem 0 4rem;
+}
+
+.page-hero .lead {
+	color: var(--autos-muted);
+	font-size: 1.15rem;
+	max-width: 48rem;
+}
+
+.page-eyebrow {
+	color: var(--autos-green);
+	font-size: 0.82rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	margin-bottom: 0.75rem;
+	text-transform: uppercase;
+}
+
+.page-card,
+.notice-panel,
+.post-card,
+.form-panel,
+.profile-panel,
+.admin-panel {
+	background: var(--autos-white);
+	border: 1px solid var(--autos-border);
+	border-radius: 8px;
+	box-shadow: 0 1rem 2.2rem rgba(32, 48, 58, 0.07);
+	padding: 1.6rem;
+}
+
+.page-card i,
+.stat-card i,
+.admin-metric i {
+	color: var(--autos-blue);
+	font-size: 2rem;
+	margin-bottom: 1rem;
+}
+
+.notice-panel {
+	background: var(--autos-mint);
+	border-color: #c9e5da;
+	color: var(--autos-blue-dark);
+}
+
+.badge-soft {
+	background: var(--autos-mint);
+	border: 1px solid #c9e5da;
+	border-radius: 999px;
+	color: var(--autos-blue-dark);
+	display: inline-flex;
+	font-size: 0.82rem;
+	font-weight: 750;
+	margin: 0 0.35rem 0.5rem 0;
+	padding: 0.35rem 0.7rem;
+}
+
+.card-meta,
+.post-meta,
+.admin-note {
+	color: var(--autos-muted);
+	font-size: 0.95rem;
+}
+
+.post-actions {
+	border-top: 1px solid var(--autos-border);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 1.2rem;
+	padding-top: 1rem;
+}
+
+.post-actions .btn {
+	padding-inline: 1rem;
+}
+
+.form-panel {
+	margin-inline: auto;
+	max-width: 36rem;
+}
+
+.form-label {
+	color: var(--autos-ink);
+	font-weight: 750;
+}
+
+.form-control,
+.form-check-input {
+	border-color: var(--autos-border);
+}
+
+.form-control:focus,
+.form-check-input:focus {
+	border-color: var(--autos-blue);
+	box-shadow: 0 0 0 0.25rem rgba(37, 95, 133, 0.16);
+}
+
+.profile-avatar {
+	align-items: center;
+	background: var(--autos-blue);
+	border-radius: 50%;
+	color: var(--autos-white);
+	display: flex;
+	font-size: 2rem;
+	font-weight: 850;
+	height: 5rem;
+	justify-content: center;
+	width: 5rem;
+}
+
+.stat-card,
+.admin-metric {
+	background: var(--autos-white);
+	border: 1px solid var(--autos-border);
+	border-radius: 8px;
+	padding: 1.25rem;
+}
+
+.stat-card strong,
+.admin-metric strong {
+	color: var(--autos-ink);
+	display: block;
+	font-size: 1.75rem;
+	line-height: 1;
+}
+
+.admin-table {
+	margin-bottom: 0;
+}
+
+.admin-table th {
+	color: var(--autos-ink);
+	font-size: 0.85rem;
+	text-transform: uppercase;
+}
+
+.admin-table td,
+.admin-table th {
+	vertical-align: middle;
+}
+
+@media (max-width: 767.98px) {
+	.page-hero {
+		padding: 7.5rem 0 3.5rem;
+	}
+
+	.post-actions {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.post-actions .btn {
+		width: 100%;
+	}
+}
