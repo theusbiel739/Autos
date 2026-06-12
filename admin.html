@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			name="description"
+			content="Protótipo visual do painel administrativo do AUTÓS com dados simulados."
+		/>
+		<title>Admin Demonstrativo | AUTÓS</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+		<link rel="stylesheet" href="assets/css/home.css" />
+		<link rel="stylesheet" href="assets/css/pages.css" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Ir para o conteúdo principal</a>
+		<header class="site-header">
+			<nav class="navbar navbar-expand-lg bg-white fixed-top" aria-label="Menu principal">
+				<div class="container">
+					<a class="navbar-brand" href="index.html">AUTÓS</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menu">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="menuPrincipal">
+						<ul class="navbar-nav ms-auto align-items-lg-center">
+							<li class="nav-item"><a class="nav-link" href="aprender.html">Aprender</a></li>
+							<li class="nav-item"><a class="nav-link" href="noticias.html">Notícias</a></li>
+							<li class="nav-item"><a class="nav-link" href="comunidade.html">Comunidade</a></li>
+							<li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
+							<li class="nav-item"><a class="btn btn-outline-primary ms-lg-3" href="login.html">Entrar</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<main id="conteudo">
+			<section class="page-hero">
+				<div class="container">
+					<p class="page-eyebrow">Admin</p>
+					<h1>Painel administrativo demonstrativo</h1>
+					<p class="lead">
+						Tela administrativa demonstrativa. O acesso real será protegido futuramente.
+					</p>
+				</div>
+			</section>
+
+			<section class="section-pad" aria-labelledby="admin-resumo">
+				<div class="container">
+					<div class="row g-4 mb-4">
+						<div class="col-md-6 col-xl-3">
+							<div class="admin-metric h-100">
+								<i class="bi bi-people" aria-hidden="true"></i>
+								<strong>128</strong>
+								<span>Usuários</span>
+							</div>
+						</div>
+						<div class="col-md-6 col-xl-3">
+							<div class="admin-metric h-100">
+								<i class="bi bi-stickies" aria-hidden="true"></i>
+								<strong>42</strong>
+								<span>Posts</span>
+							</div>
+						</div>
+						<div class="col-md-6 col-xl-3">
+							<div class="admin-metric h-100">
+								<i class="bi bi-chat-square-text" aria-hidden="true"></i>
+								<strong>96</strong>
+								<span>Comentários</span>
+							</div>
+						</div>
+						<div class="col-md-6 col-xl-3">
+							<div class="admin-metric h-100">
+								<i class="bi bi-flag" aria-hidden="true"></i>
+								<strong>5</strong>
+								<span>Denúncias</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="admin-panel">
+						<div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
+							<div>
+								<h2 id="admin-resumo">Moderação simulada</h2>
+								<p class="admin-note mb-0">Dados fictícios para representar a futura visão administrativa.</p>
+							</div>
+							<span class="badge-soft align-self-start">Protótipo visual</span>
+						</div>
+						<div class="table-responsive">
+							<table class="table admin-table">
+								<thead>
+									<tr>
+										<th scope="col">Área</th>
+										<th scope="col">Status</th>
+										<th scope="col">Resumo</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Palavras bloqueadas</td>
+										<td><span class="badge-soft">12 termos</span></td>
+										<td>Lista demonstrativa para moderação futura.</td>
+									</tr>
+									<tr>
+										<td>Notícias</td>
+										<td><span class="badge-soft">8 rascunhos</span></td>
+										<td>Conteúdos simulados aguardando revisão.</td>
+									</tr>
+									<tr>
+										<td>Conteúdos educativos</td>
+										<td><span class="badge-soft">6 categorias</span></td>
+										<td>Estrutura visual das trilhas de aprendizagem.</td>
+									</tr>
+									<tr>
+										<td>Denúncias</td>
+										<td><span class="badge-soft">5 pendentes</span></td>
+										<td>Fila visual para análise administrativa futura.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="container">
+				<div class="row align-items-center gy-4">
+					<div class="col-lg-4">
+						<a class="footer-brand" href="index.html">AUTÓS</a>
+						<p>Informação, acolhimento e conexão.</p>
+					</div>
+					<div class="col-lg-8">
+						<ul class="footer-links">
+							<li><a href="sobre.html">Sobre</a></li>
+							<li><a href="aprender.html">Aprender</a></li>
+							<li><a href="noticias.html">Notícias</a></li>
+							<li><a href="comunidade.html">Comunidade</a></li>
+							<li><a href="login.html">Login</a></li>
+							<li><a href="cadastro.html">Cadastro</a></li>
+							<!-- Documento a ser implementado futuramente. -->
+							<li><a href="#">Termos de Uso</a></li>
+							<!-- Documento a ser implementado futuramente. -->
+							<li><a href="#">Política de Privacidade</a></li>
+							<!-- Documento a ser implementado futuramente. -->
+							<li><a href="#">Diretrizes da Comunidade</a></li>
+							<!-- Documento a ser implementado futuramente. -->
+							<li><a href="#">Contato</a></li>
+						</ul>
+					</div>
+				</div>
+				<p class="footer-copy">&copy; 2026 AUTÓS. Todos os direitos reservados.</p>
+			</div>
+		</footer>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>
