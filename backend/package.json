@@ -1,0 +1,32 @@
+{
+  "name": "autos-backend",
+  "version": "0.1.0",
+  "description": "Base inicial da API REST do AUTOS.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "autos",
+    "express",
+    "mysql",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "helmet": "^8.2.0",
+    "morgan": "^1.11.0",
+    "mysql2": "^3.22.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
