@@ -1,6 +1,7 @@
 const argon2 = require('argon2');
 
 const pool = require('../config/database');
+const { createSession } = require('./sessionService');
 
 const USER_ROLE_NAME = 'Usuário';
 const ACTIVE_STATUS = 'ativo';
@@ -47,6 +48,23 @@ async function assertEmailIsAvailable(connection, email) {
 
 function isDuplicateEmailError(error) {
   return error && error.code === 'ER_DUP_ENTRY';
+}
+
+function createSafeUser(user) {
+  return {
+    id: user.id,
+    nome_exibicao: user.nome_exibicao,
+    email: user.email,
+    status: user.status
+  };
+}
+
+function createInvalidCredentialsError() {
+  return new AuthServiceError(
+    'INVALID_CREDENTIALS',
+    'E-mail ou senha inválidos.',
+    401
+  );
 }
 
 async function registerUser(data) {
@@ -102,7 +120,37 @@ async function registerUser(data) {
   }
 }
 
+async function loginUser(data) {
+  const [rows] = await pool.execute(
+    `SELECT id, nome_exibicao, email, senha_hash, status
+     FROM usuarios
+     WHERE email = ?
+       AND status = ?
+     LIMIT 1`,
+    [data.email, ACTIVE_STATUS]
+  );
+
+  if (rows.length === 0) {
+    throw createInvalidCredentialsError();
+  }
+
+  const user = rows[0];
+  const passwordMatches = await argon2.verify(user.senha_hash, data.senha);
+
+  if (!passwordMatches) {
+    throw createInvalidCredentialsError();
+  }
+
+  const session = await createSession(user.id);
+
+  return {
+    user: createSafeUser(user),
+    token: session.token
+  };
+}
+
 module.exports = {
   AuthServiceError,
+  loginUser,
   registerUser
 };
