@@ -2,6 +2,24 @@ const {
   SESSION_COOKIE_NAME,
   findValidSessionByToken
 } = require('../services/sessionService');
+const pool = require('../config/database');
+
+async function findUserRoleId(userId) {
+  const [rows] = await pool.execute(
+    `SELECT tipo_usuario_id
+     FROM usuarios
+     WHERE id = ?
+       AND status = 'ativo'
+     LIMIT 1`,
+    [userId]
+  );
+
+  if (rows.length === 0) {
+    return null;
+  }
+
+  return rows[0].tipo_usuario_id;
+}
 
 async function requireAuth(req, res, next) {
   try {
@@ -23,7 +41,19 @@ async function requireAuth(req, res, next) {
       });
     }
 
-    req.user = result.user;
+    const tipoUsuarioId = await findUserRoleId(result.user.id);
+
+    if (!tipoUsuarioId) {
+      return res.status(401).json({
+        error: 'UNAUTHENTICATED',
+        message: 'Não autenticado.'
+      });
+    }
+
+    req.user = {
+      ...result.user,
+      tipo_usuario_id: tipoUsuarioId
+    };
     req.session = result.session;
 
     return next();
