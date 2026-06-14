@@ -1,14 +1,16 @@
-# AUTOS Back-end
+# AUTÓS Back-end
 
-Base inicial da API REST do AUTOS com Node.js, Express e MySQL.
+API REST do AUTÓS com Node.js, Express e MySQL.
 
 ## Requisitos
 
-- Node.js 18 ou superior
+- Node.js 18+
 - MySQL local
-- Banco de dados local `autos_db`
+- Banco local `autos_db`
 
 ## Configuracao local
+
+Crie o arquivo `.env` a partir de `.env.example` e ajuste os valores locais quando necessario.
 
 ```bash
 cd backend
@@ -21,10 +23,19 @@ Por padrao, a API usa a porta `3001`.
 
 ## Variaveis de ambiente
 
-As configuracoes ficam no arquivo `.env`, criado localmente a partir de `.env.example`.
-Nao coloque senhas reais no codigo-fonte.
+Variaveis principais usadas pelo back-end:
 
-## Rotas de teste
+- `PORT`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+- `CORS_ORIGIN`
+
+Nao coloque senhas reais no codigo-fonte e nao versione arquivos `.env`.
+
+## Rotas atuais
 
 ```text
 GET /api/health
@@ -71,6 +82,17 @@ curl http://localhost:3001/api/health
 curl http://localhost:3001/api/db/health
 ```
 
-## Escopo desta etapa
+## Escopo atual
 
-Esta base prepara a estrutura do servidor, rotas, middlewares, tratamento de erros e conexao com MySQL. Login, cadastro, posts, noticias RSS e autenticacao ainda nao foram implementados.
+- Estrutura base do servidor
+- Middlewares
+- Tratamento de erros
+- Conexao com MySQL
+
+## Fora do escopo atual
+
+- Login real
+- Cadastro real
+- Posts reais
+- RSS
+- Sessao/cookie real
