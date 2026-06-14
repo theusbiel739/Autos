@@ -31,7 +31,10 @@ function mapPostRow(row) {
           id: row.marcador_id,
           nome: row.marcador_nome
         }
-      : null
+      : null,
+    curtidas: {
+      total: Number(row.curtidas_total)
+    }
   };
 }
 
@@ -90,7 +93,12 @@ async function findPublishedPostById(postId) {
         c.id AS categoria_id,
         c.nome AS categoria_nome,
         m.id AS marcador_id,
-        m.nome AS marcador_nome
+        m.nome AS marcador_nome,
+        (
+          SELECT COUNT(*)
+          FROM curtidas curt
+          WHERE curt.post_id = p.id
+        ) AS curtidas_total
      FROM posts p
      INNER JOIN usuarios u ON u.id = p.usuario_id
      INNER JOIN categorias_posts c ON c.id = p.categoria_id
@@ -143,7 +151,12 @@ async function listPublishedPosts(pagination) {
         c.id AS categoria_id,
         c.nome AS categoria_nome,
         m.id AS marcador_id,
-        m.nome AS marcador_nome
+        m.nome AS marcador_nome,
+        (
+          SELECT COUNT(*)
+          FROM curtidas curt
+          WHERE curt.post_id = p.id
+        ) AS curtidas_total
      FROM posts p
      INNER JOIN usuarios u ON u.id = p.usuario_id
      INNER JOIN categorias_posts c ON c.id = p.categoria_id
