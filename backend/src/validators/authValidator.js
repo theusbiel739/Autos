@@ -87,6 +87,41 @@ function validateRegisterPayload(payload = {}) {
   };
 }
 
+function validateLoginPayload(payload = {}) {
+  const errors = [];
+
+  const email = typeof payload.email === 'string' ? payload.email.trim().toLowerCase() : '';
+  const senha = typeof payload.senha === 'string' ? payload.senha : '';
+
+  if (!email) {
+    errors.push(createValidationError('email', 'E-mail é obrigatório.'));
+  } else {
+    if (email.length > 255) {
+      errors.push(createValidationError('email', 'E-mail deve ter no máximo 255 caracteres.'));
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+      errors.push(createValidationError('email', 'E-mail inválido.'));
+    }
+  }
+
+  if (!senha) {
+    errors.push(createValidationError('senha', 'Senha é obrigatória.'));
+  } else if (senha.length > 128) {
+    errors.push(createValidationError('senha', 'Senha deve ter no máximo 128 caracteres.'));
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+    data: {
+      email,
+      senha
+    }
+  };
+}
+
 module.exports = {
+  validateLoginPayload,
   validateRegisterPayload
 };
