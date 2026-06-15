@@ -5,6 +5,7 @@ const dbHealthRoutes = require('./dbHealth.routes');
 const authRoutes = require('./auth.routes');
 const adminRoutes = require('./admin.routes');
 const postsRoutes = require('./posts.routes');
+const reportsRoutes = require('./reports.routes');
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.use('/db/health', dbHealthRoutes);
 router.use('/auth', authRoutes);
 router.use('/admin', adminRoutes);
 router.use('/posts', postsRoutes);
+router.use('/reports', reportsRoutes);
 
 module.exports = router;
