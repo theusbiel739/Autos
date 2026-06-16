@@ -1,4 +1,5 @@
 const pool = require('../config/database');
+const { containsBlockedTerm } = require('../utils/profanityFilter');
 
 const PUBLISHED_STATUS = 'publicado';
 
@@ -117,6 +118,14 @@ async function findPublishedPostById(postId) {
 }
 
 async function createPost(data, usuarioId) {
+  if (containsBlockedTerm(data.conteudo)) {
+    throw new PostServiceError(
+      'CONTENT_BLOCKED',
+      'O conteúdo contém termos não permitidos.',
+      400
+    );
+  }
+
   await assertActiveCategoryExists(data.categoria_id);
   await assertActiveMarkerExists(data.marcador_id);
 

@@ -1,4 +1,5 @@
 const pool = require('../config/database');
+const { containsBlockedTerm } = require('../utils/profanityFilter');
 
 const PUBLISHED_STATUS = 'publicado';
 
@@ -71,6 +72,14 @@ async function findPublishedCommentById(commentId) {
 
 async function createComment(data, postId, usuarioId) {
   await assertPublishedPostExists(postId);
+
+  if (containsBlockedTerm(data.conteudo)) {
+    throw new CommentServiceError(
+      'CONTENT_BLOCKED',
+      'O conteúdo contém termos não permitidos.',
+      400
+    );
+  }
 
   const [result] = await pool.execute(
     `INSERT INTO comentarios
