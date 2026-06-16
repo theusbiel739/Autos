@@ -67,6 +67,45 @@
 	color: var(--autos-blue-dark);
 }
 
+.api-state {
+	border-radius: 8px;
+	color: var(--autos-muted);
+	margin-bottom: 1rem;
+	padding: 0;
+}
+
+.api-state:empty {
+	display: none;
+}
+
+.api-state.is-loading,
+.api-state.is-empty,
+.api-state.is-error,
+.api-state.is-success {
+	border: 1px solid var(--autos-border);
+	padding: 0.85rem 1rem;
+}
+
+.api-state.is-loading {
+	background: var(--autos-soft);
+}
+
+.api-state.is-empty {
+	background: var(--autos-white);
+}
+
+.api-state.is-error {
+	background: #fff7f7;
+	border-color: #d9a7a7;
+	color: #7f2525;
+}
+
+.api-state.is-success {
+	background: var(--autos-mint);
+	border-color: #c9e5da;
+	color: var(--autos-blue-dark);
+}
+
 .badge-soft {
 	background: var(--autos-mint);
 	border: 1px solid #c9e5da;
@@ -96,7 +135,43 @@
 }
 
 .post-actions .btn {
+	align-items: center;
+	display: inline-flex;
+	gap: 0.4rem;
+	justify-content: center;
 	padding-inline: 1rem;
+}
+
+.post-content {
+	color: var(--autos-ink);
+	font-size: 1.08rem;
+	line-height: 1.7;
+	white-space: pre-line;
+}
+
+.post-detail-card {
+	margin-bottom: 1rem;
+}
+
+.comments-list {
+	display: grid;
+	gap: 1rem;
+}
+
+.comment-card {
+	background: var(--autos-white);
+	border: 1px solid var(--autos-border);
+	border-radius: 8px;
+	padding: 1.2rem;
+}
+
+.comment-card p:last-child {
+	margin-bottom: 0;
+}
+
+.form-feedback-list {
+	margin: 0.75rem 0 0;
+	padding-left: 1.2rem;
 }
 
 .form-panel {
