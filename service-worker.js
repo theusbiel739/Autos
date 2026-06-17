@@ -1,7 +1,7 @@
 (function () {
 	"use strict";
 
-	var CACHE_NAME = "autos-static-v1";
+	var CACHE_NAME = "autos-static-v2";
 	var STATIC_ASSETS = [
 		"/",
 		"/index.html",
@@ -18,6 +18,7 @@
 		"/assets/js/news.js",
 		"/assets/js/post.js",
 		"/assets/js/pwa.js",
+		"/assets/js/reports.js",
 		"/assets/icons/icon-192.png",
 		"/assets/icons/icon-512.png",
 		"/images/pexels-tara-winstead-8386122.jpg"

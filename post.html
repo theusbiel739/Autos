@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			name="description"
-			content="Detalhe de post da comunidade AUTÓS com comentários publicados em modo leitura."
+			content="Detalhe de post da comunidade AUTÓS com comentários, curtidas e denúncias para usuários autenticados."
 		/>
 		<meta name="theme-color" content="#255f85" />
 		<title>Post da comunidade | AUTÓS</title>
@@ -45,7 +45,7 @@
 					<p class="page-eyebrow">Comunidade</p>
 					<h1>Detalhe do post</h1>
 					<p class="lead">
-						Comentários publicados aparecem somente para leitura neste módulo.
+						Leia a conversa, participe com respeito e sinalize conteúdos que precisem de análise.
 					</p>
 				</div>
 			</section>
@@ -68,6 +68,22 @@
 						<p class="section-kicker">Comentários</p>
 						<h2 id="comentarios-titulo">Respostas publicadas</h2>
 					</div>
+					<form class="comment-form form-panel mb-4" data-comment-form>
+						<label class="form-label" for="comentario">Escrever comentário</label>
+						<textarea
+							class="form-control"
+							id="comentario"
+							name="conteudo"
+							rows="4"
+							maxlength="300"
+							placeholder="Compartilhe uma resposta respeitosa em até 300 caracteres."
+						></textarea>
+						<p class="form-hint">
+							Para comentar, entre na sua conta. Visitantes podem ler os comentários publicados.
+						</p>
+						<button class="btn btn-primary" type="submit">Publicar comentário</button>
+						<div class="api-state" data-comment-form-status aria-live="polite"></div>
+					</form>
 					<div class="api-state" data-comments-status aria-live="polite"></div>
 					<div class="comments-list" data-comments-list></div>
 				</div>
@@ -89,13 +105,9 @@
 							<li><a href="comunidade.html">Comunidade</a></li>
 							<li><a href="login.html">Login</a></li>
 							<li><a href="cadastro.html">Cadastro</a></li>
-							<!-- Documento a ser implementado futuramente. -->
 							<li><a href="#">Termos de Uso</a></li>
-							<!-- Documento a ser implementado futuramente. -->
 							<li><a href="#">Política de Privacidade</a></li>
-							<!-- Documento a ser implementado futuramente. -->
 							<li><a href="#">Diretrizes da Comunidade</a></li>
-							<!-- Documento a ser implementado futuramente. -->
 							<li><a href="#">Contato</a></li>
 						</ul>
 					</div>
@@ -106,6 +118,7 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/api.js"></script>
+		<script src="assets/js/reports.js"></script>
 		<script src="assets/js/post.js"></script>
 		<script src="assets/js/pwa.js"></script>
 	</body>

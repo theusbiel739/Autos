@@ -47,7 +47,27 @@
 			return "Conteúdo não encontrado.";
 		}
 
+		if (status === 409) {
+			return "Esta ação já foi registrada.";
+		}
+
 		return "Não foi possível carregar os dados agora. Tente novamente em instantes.";
+	}
+
+	function getErrorCode(error) {
+		return error && error.payload && typeof error.payload.error === "string" ? error.payload.error : "";
+	}
+
+	function getErrorMessage(error, fallbackMessage) {
+		if (!error) {
+			return fallbackMessage || getFriendlyMessage(0);
+		}
+
+		if (error.friendlyMessage && error.message && error.friendlyMessage !== error.message) {
+			return error.friendlyMessage + " " + error.message;
+		}
+
+		return error.friendlyMessage || error.message || fallbackMessage || getFriendlyMessage(0);
 	}
 
 	function getErrorDetails(error) {
@@ -137,7 +157,9 @@
 	window.AutosApi = {
 		clearElement: clearElement,
 		formatDate: formatDate,
+		getErrorCode: getErrorCode,
 		getErrorDetails: getErrorDetails,
+		getErrorMessage: getErrorMessage,
 		getFriendlyMessage: getFriendlyMessage,
 		request: request,
 		setStatus: setStatus

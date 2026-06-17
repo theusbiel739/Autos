@@ -1,6 +1,10 @@
 (function () {
 	"use strict";
 
+	var currentPostId = "";
+	var commentsContainer = null;
+	var commentsStatus = null;
+
 	function getPostId() {
 		var params = new URLSearchParams(window.location.search);
 		var postId = params.get("id");
@@ -8,15 +12,15 @@
 		return postId && /^[1-9][0-9]*$/.test(postId) ? postId : "";
 	}
 
-	function createMetaText(post) {
+	function createMetaText(item) {
 		var parts = [];
 
-		if (post.autor && post.autor.nome_exibicao) {
-			parts.push("Publicado por " + post.autor.nome_exibicao);
+		if (item.autor && item.autor.nome_exibicao) {
+			parts.push("Publicado por " + item.autor.nome_exibicao);
 		}
 
-		if (post.criado_em) {
-			parts.push(window.AutosApi.formatDate(post.criado_em));
+		if (item.criado_em) {
+			parts.push(window.AutosApi.formatDate(item.criado_em));
 		}
 
 		return parts.join(" - ");
@@ -51,10 +55,21 @@
 			setLikeButtonLabel(button, Boolean(like.liked), Number(like.total || 0));
 			window.AutosApi.setStatus(feedback, response.message || "Curtida atualizada.", "success");
 		} catch (error) {
-			window.AutosApi.setStatus(feedback, error.friendlyMessage + " " + error.message, "error");
+			window.AutosApi.setStatus(feedback, window.AutosApi.getErrorMessage(error), "error");
 		} finally {
 			button.disabled = false;
 		}
+	}
+
+	function appendReportBox(container, targetType, targetId) {
+		if (!window.AutosReports || !targetId) {
+			return;
+		}
+
+		container.appendChild(window.AutosReports.createReportBox({
+			targetId: targetId,
+			targetType: targetType
+		}));
 	}
 
 	function renderPost(post, container, feedback) {
@@ -105,6 +120,7 @@
 		});
 
 		actions.appendChild(likeButton);
+		appendReportBox(actions, "post", post.id);
 		article.append(badges, title, meta, content, actions);
 		container.appendChild(article);
 	}
@@ -130,24 +146,107 @@
 			var content = document.createElement("p");
 			content.textContent = comment.conteudo || "";
 
-			article.append(meta, content);
+			var actions = document.createElement("div");
+			actions.className = "comment-actions";
+			appendReportBox(actions, "comment", comment.id);
+
+			article.append(meta, content, actions);
 			container.appendChild(article);
 		});
 	}
 
+	async function loadComments() {
+		window.AutosApi.setStatus(commentsStatus, "Carregando comentários...", "loading");
+
+		var commentsResponse = await window.AutosApi.request("/posts/" + currentPostId + "/comments");
+		var comments = Array.isArray(commentsResponse.comments) ? commentsResponse.comments : [];
+		renderComments(comments, commentsContainer, commentsStatus);
+	}
+
+	function renderCommentErrors(status, message, details) {
+		window.AutosApi.setStatus(status, message, "error");
+
+		if (!details.length) {
+			return;
+		}
+
+		var list = document.createElement("ul");
+		list.className = "form-feedback-list";
+
+		details.forEach(function (detail) {
+			var item = document.createElement("li");
+			item.textContent = detail;
+			list.appendChild(item);
+		});
+
+		status.appendChild(list);
+	}
+
+	function bindCommentForm() {
+		var form = document.querySelector("[data-comment-form]");
+
+		if (!form) {
+			return;
+		}
+
+		var status = form.querySelector("[data-comment-form-status]");
+		var textarea = form.querySelector("[name='conteudo']");
+		var button = form.querySelector("button[type='submit']");
+
+		form.addEventListener("submit", async function (event) {
+			event.preventDefault();
+
+			var conteudo = textarea ? textarea.value.trim() : "";
+
+			if (!conteudo) {
+				renderCommentErrors(status, "Escreva um comentário antes de enviar.", []);
+				return;
+			}
+
+			if (conteudo.length > 300) {
+				renderCommentErrors(status, "O comentário deve ter no máximo 300 caracteres.", []);
+				return;
+			}
+
+			button.disabled = true;
+			button.textContent = "Enviando...";
+			window.AutosApi.setStatus(status, "Enviando comentário...", "loading");
+
+			try {
+				var response = await window.AutosApi.request("/posts/" + currentPostId + "/comments", {
+					auth: true,
+					credentials: "include",
+					method: "POST",
+					body: {
+						conteudo: conteudo
+					}
+				});
+
+				window.AutosApi.setStatus(status, response.message || "Comentário publicado com sucesso.", "success");
+				form.reset();
+				await loadComments();
+			} catch (error) {
+				renderCommentErrors(status, window.AutosApi.getErrorMessage(error), window.AutosApi.getErrorDetails(error));
+			} finally {
+				button.disabled = false;
+				button.textContent = "Publicar comentário";
+			}
+		});
+	}
+
 	async function loadPostDetail() {
-		var postId = getPostId();
+		currentPostId = getPostId();
 		var postContainer = document.querySelector("[data-post-detail]");
 		var postStatus = document.querySelector("[data-post-status]");
-		var commentsContainer = document.querySelector("[data-comments-list]");
-		var commentsStatus = document.querySelector("[data-comments-status]");
+		commentsContainer = document.querySelector("[data-comments-list]");
+		commentsStatus = document.querySelector("[data-comments-status]");
 		var feedback = document.querySelector("[data-post-feedback]");
 
 		if (!postContainer || !postStatus || !commentsContainer || !commentsStatus || !feedback || !window.AutosApi) {
 			return;
 		}
 
-		if (!postId) {
+		if (!currentPostId) {
 			window.AutosApi.setStatus(postStatus, "Conteúdo não encontrado.", "error");
 			window.AutosApi.setStatus(commentsStatus, "", "loaded");
 			return;
@@ -158,20 +257,20 @@
 		window.AutosApi.setStatus(feedback, "", "loaded");
 
 		try {
-			var postResponse = await window.AutosApi.request("/posts/" + postId);
+			var postResponse = await window.AutosApi.request("/posts/" + currentPostId);
 			renderPost(postResponse.post, postContainer, feedback);
 			window.AutosApi.setStatus(postStatus, "", "loaded");
-
-			var commentsResponse = await window.AutosApi.request("/posts/" + postId + "/comments");
-			var comments = Array.isArray(commentsResponse.comments) ? commentsResponse.comments : [];
-			renderComments(comments, commentsContainer, commentsStatus);
+			await loadComments();
 		} catch (error) {
 			window.AutosApi.clearElement(postContainer);
 			window.AutosApi.clearElement(commentsContainer);
-			window.AutosApi.setStatus(postStatus, error.friendlyMessage, "error");
+			window.AutosApi.setStatus(postStatus, window.AutosApi.getErrorMessage(error), "error");
 			window.AutosApi.setStatus(commentsStatus, "", "loaded");
 		}
 	}
 
-	document.addEventListener("DOMContentLoaded", loadPostDetail);
+	document.addEventListener("DOMContentLoaded", function () {
+		bindCommentForm();
+		loadPostDetail();
+	});
 })();
