@@ -63,7 +63,7 @@
 			setLikeButtonLabel(button, nextLiked, nextTotal);
 			window.AutosApi.setStatus(feedback, response.message || "Curtida atualizada.", "success");
 		} catch (error) {
-			window.AutosApi.setStatus(feedback, error.friendlyMessage + " " + error.message, "error");
+			window.AutosApi.setStatus(feedback, window.AutosApi.getErrorMessage(error), "error");
 		} finally {
 			setButtonState(button, false);
 		}
@@ -144,7 +144,7 @@
 			var posts = Array.isArray(response.posts) ? response.posts : [];
 
 			if (posts.length === 0) {
-				window.AutosApi.setStatus(status, "Nenhum post publicado no momento.", "empty");
+				window.AutosApi.setStatus(status, "Ainda não há posts publicados.", "empty");
 				return;
 			}
 
@@ -153,7 +153,7 @@
 				list.appendChild(createPostCard(post, feedback));
 			});
 		} catch (error) {
-			window.AutosApi.setStatus(status, error.friendlyMessage, "error");
+			window.AutosApi.setStatus(status, window.AutosApi.getErrorMessage(error), "error");
 		}
 	}
 
