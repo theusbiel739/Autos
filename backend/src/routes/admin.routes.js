@@ -1,5 +1,6 @@
 const { Router } = require('express');
 
+const adminNewsSourcesRoutes = require('./adminNewsSources.routes');
 const adminReportsRoutes = require('./adminReports.routes');
 const { adminNewsRoutes } = require('./news.routes');
 const {
@@ -18,6 +19,7 @@ router.get('/health', requireAuth, requireAdmin, (req, res) => {
 });
 
 router.use('/news', requireAuth, requireModeratorOrAdmin, adminNewsRoutes);
+router.use('/news-sources', requireAuth, requireModeratorOrAdmin, adminNewsSourcesRoutes);
 router.use('/reports', requireAuth, requireModeratorOrAdmin, adminReportsRoutes);
 
 module.exports = router;

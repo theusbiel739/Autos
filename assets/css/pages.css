@@ -356,6 +356,8 @@
 .admin-table .btn,
 .admin-pagination .btn,
 .admin-status-form .btn,
+#news-source-clear-button,
+#news-source-submit,
 #sync-news-button {
 	align-items: center;
 	display: inline-flex;
@@ -390,6 +392,33 @@
 	background: #fff0f0;
 	border-color: #d9a7a7;
 	color: #7f2525;
+}
+
+.admin-source-status-ativa {
+	background: var(--autos-mint);
+	border-color: #addbc9;
+	color: #174f3c;
+}
+
+.admin-source-status-inativa {
+	background: #fff0f0;
+	border-color: #d9a7a7;
+	color: #7f2525;
+}
+
+.admin-news-source-layout {
+	display: grid;
+	gap: 1.25rem;
+	grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.55fr);
+}
+
+.admin-news-source-form {
+	background: var(--autos-soft);
+	border: 1px solid var(--autos-border);
+	border-radius: 8px;
+	display: grid;
+	gap: 1rem;
+	padding: 1rem;
 }
 
 .admin-pagination {
@@ -532,6 +561,7 @@
 	.admin-summary-grid,
 	.admin-grid,
 	.admin-detail-grid,
+	.admin-news-source-layout,
 	.admin-sync-grid {
 		grid-template-columns: 1fr;
 	}
@@ -557,6 +587,8 @@
 	.admin-state-controls .btn,
 	.admin-pagination .btn,
 	.admin-status-form .btn,
+	#news-source-clear-button,
+	#news-source-submit,
 	#sync-news-button {
 		width: 100%;
 	}
