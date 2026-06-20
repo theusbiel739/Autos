@@ -137,6 +137,32 @@
 		window.AutosApi.clearElement(element);
 	}
 
+	function getSafeExternalUrl(value) {
+		if (typeof value !== "string" || !value.trim()) {
+			return "";
+		}
+
+		try {
+			var url = new URL(value.trim(), window.location.href);
+
+			if (url.protocol !== "http:" && url.protocol !== "https:") {
+				return "";
+			}
+
+			return url.href;
+		} catch (error) {
+			return "";
+		}
+	}
+
+	function setButtonContent(button, iconClass, label) {
+		var icon = document.createElement("i");
+
+		icon.className = iconClass;
+		icon.setAttribute("aria-hidden", "true");
+		button.replaceChildren(icon, " " + label);
+	}
+
 	function createCell(text) {
 		var cell = document.createElement("td");
 		cell.textContent = text;
@@ -253,7 +279,7 @@
 
 				actionButton.className = "btn btn-outline-primary btn-sm";
 				actionButton.type = "button";
-				actionButton.innerHTML = '<i class="bi bi-eye" aria-hidden="true"></i> Ver';
+				setButtonContent(actionButton, "bi bi-eye", "Ver");
 				actionButton.addEventListener("click", function () {
 					loadReportDetail(kind, report.id);
 				});
@@ -295,7 +321,7 @@
 		getElement("news-source-status-select").value = "ativa";
 		getElement("news-source-form-title").textContent = "Nova fonte RSS";
 		getElement("news-source-form-note").textContent = "Informe os dados da fonte para cadastrar uma nova origem de notícias.";
-		getElement("news-source-submit").innerHTML = '<i class="bi bi-save" aria-hidden="true"></i> Salvar fonte';
+		setButtonContent(getElement("news-source-submit"), "bi bi-save", "Salvar fonte");
 		setStatus(getElement("news-source-form-feedback"), "", "loaded");
 	}
 
@@ -307,7 +333,7 @@
 		getElement("news-source-status-select").value = normalizeSourceStatus(source.status);
 		getElement("news-source-form-title").textContent = "Editar fonte RSS";
 		getElement("news-source-form-note").textContent = "Atualize os dados permitidos para esta fonte.";
-		getElement("news-source-submit").innerHTML = '<i class="bi bi-save" aria-hidden="true"></i> Atualizar fonte';
+		setButtonContent(getElement("news-source-submit"), "bi bi-save", "Atualizar fonte");
 		setStatus(getElement("news-source-form-feedback"), "", "loaded");
 	}
 
@@ -339,26 +365,33 @@
 			var editButton = document.createElement("button");
 			var statusButton = document.createElement("button");
 			var nextStatus = normalizeSourceStatus(source.status) === "ativa" ? "inativa" : "ativa";
+			var safeRssUrl = getSafeExternalUrl(source.url_rss);
 
-			rssLink.href = source.url_rss;
-			rssLink.rel = "noopener noreferrer";
-			rssLink.target = "_blank";
+			rssLink.href = safeRssUrl || "#";
 			rssLink.textContent = truncateText(source.url_rss, 48);
+
+			if (safeRssUrl) {
+				rssLink.rel = "noopener noreferrer";
+				rssLink.target = "_blank";
+			}
+
 			rssCell.appendChild(rssLink);
 			statusCell.appendChild(createSourceStatusBadge(source.status));
 
 			editButton.className = "btn btn-outline-primary btn-sm";
 			editButton.type = "button";
-			editButton.innerHTML = '<i class="bi bi-pencil-square" aria-hidden="true"></i> Editar';
+			setButtonContent(editButton, "bi bi-pencil-square", "Editar");
 			editButton.addEventListener("click", function () {
 				fillSourceForm(source);
 			});
 
 			statusButton.className = "btn btn-outline-primary btn-sm";
 			statusButton.type = "button";
-			statusButton.innerHTML = normalizeSourceStatus(source.status) === "ativa"
-				? '<i class="bi bi-pause-circle" aria-hidden="true"></i> Desativar'
-				: '<i class="bi bi-play-circle" aria-hidden="true"></i> Ativar';
+			if (normalizeSourceStatus(source.status) === "ativa") {
+				setButtonContent(statusButton, "bi bi-pause-circle", "Desativar");
+			} else {
+				setButtonContent(statusButton, "bi bi-play-circle", "Ativar");
+			}
 			statusButton.addEventListener("click", function () {
 				updateNewsSourceStatus(source.id, nextStatus);
 			});

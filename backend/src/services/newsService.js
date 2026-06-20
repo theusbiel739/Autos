@@ -32,6 +32,24 @@ function truncateText(value, maxLength) {
   return normalized.length > maxLength ? normalized.slice(0, maxLength) : normalized;
 }
 
+function normalizeHttpUrl(value, maxLength) {
+  if (!value || typeof value !== 'string') {
+    return null;
+  }
+
+  try {
+    const url = new URL(value.trim());
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return null;
+    }
+
+    return url.href.length <= maxLength ? url.href : null;
+  } catch (error) {
+    return null;
+  }
+}
+
 function stripHtml(value) {
   if (!value || typeof value !== 'string') {
     return null;
@@ -77,7 +95,7 @@ function mapSourceRow(row) {
 
 function mapRssItemToNews(sourceId, item) {
   const title = truncateText(item.title, 180);
-  const url = truncateText(item.link, 500);
+  const url = normalizeHttpUrl(item.link, 500);
   const summarySource = item.contentSnippet || item.summary || item.content || item['content:encoded'];
 
   if (!title || !url) {

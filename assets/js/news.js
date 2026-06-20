@@ -1,9 +1,28 @@
 (function () {
 	"use strict";
 
+	function getSafeExternalUrl(value) {
+		if (typeof value !== "string" || !value.trim()) {
+			return "";
+		}
+
+		try {
+			var url = new URL(value.trim(), window.location.href);
+
+			if (url.protocol !== "http:" && url.protocol !== "https:") {
+				return "";
+			}
+
+			return url.href;
+		} catch (error) {
+			return "";
+		}
+	}
+
 	function createNewsCard(newsItem, titleTag) {
 		var column = document.createElement("div");
 		column.className = "col-lg-4";
+		var safeUrl = getSafeExternalUrl(newsItem.url_original);
 
 		var article = document.createElement("article");
 		article.className = "content-card h-100";
@@ -25,10 +44,10 @@
 
 		var link = document.createElement("a");
 		link.className = "read-link";
-		link.href = newsItem.url_original || "#";
+		link.href = safeUrl || "#";
 		link.textContent = "Ler notícia original";
 
-		if (newsItem.url_original) {
+		if (safeUrl) {
 			link.target = "_blank";
 			link.rel = "noopener noreferrer";
 		}

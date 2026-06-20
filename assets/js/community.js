@@ -32,13 +32,12 @@
 
 	function setLikeButtonLabel(button, isLiked, total) {
 		button.dataset.liked = isLiked ? "true" : "false";
-		button.innerHTML = "";
 
 		var icon = document.createElement("i");
 		icon.className = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
 		icon.setAttribute("aria-hidden", "true");
 
-		button.append(icon, " ", isLiked ? "Remover curtida" : "Curtir", " (" + total + ")");
+		button.replaceChildren(icon, " ", isLiked ? "Remover curtida" : "Curtir", " (" + total + ")");
 	}
 
 	async function toggleLike(button, feedback) {
@@ -117,7 +116,10 @@
 		var detailsLink = document.createElement("a");
 		detailsLink.className = "btn btn-outline-primary";
 		detailsLink.href = "post.html?id=" + encodeURIComponent(post.id);
-		detailsLink.innerHTML = '<i class="bi bi-chat" aria-hidden="true"></i> Ver comentários';
+		var detailsIcon = document.createElement("i");
+		detailsIcon.className = "bi bi-chat";
+		detailsIcon.setAttribute("aria-hidden", "true");
+		detailsLink.append(detailsIcon, " Ver comentários");
 
 		actions.append(likeButton, detailsLink);
 		article.append(title, meta, content, actions);
