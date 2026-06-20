@@ -28,13 +28,12 @@
 
 	function setLikeButtonLabel(button, isLiked, total) {
 		button.dataset.liked = isLiked ? "true" : "false";
-		button.innerHTML = "";
 
 		var icon = document.createElement("i");
 		icon.className = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
 		icon.setAttribute("aria-hidden", "true");
 
-		button.append(icon, " ", isLiked ? "Remover curtida" : "Curtir", " (" + total + ")");
+		button.replaceChildren(icon, " ", isLiked ? "Remover curtida" : "Curtir", " (" + total + ")");
 	}
 
 	async function toggleLike(button, feedback) {
