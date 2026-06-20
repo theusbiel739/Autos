@@ -41,6 +41,7 @@
 							<li class="nav-item"><a class="nav-link" href="#resumo">Resumo</a></li>
 							<li class="nav-item"><a class="nav-link" href="#denuncias-posts">Posts</a></li>
 							<li class="nav-item"><a class="nav-link" href="#denuncias-comentarios">Comentários</a></li>
+							<li class="nav-item"><a class="nav-link" href="#fontes-rss">Fontes RSS</a></li>
 							<li class="nav-item"><a class="nav-link" href="#sincronizacao-rss">RSS</a></li>
 							<li class="nav-item">
 								<a class="btn btn-outline-primary ms-lg-3" href="index.html">
@@ -273,6 +274,91 @@
 
 			<section class="section-pad" id="sincronizacao-rss" aria-labelledby="sincronizacao-rss-titulo">
 				<div class="container">
+					<section class="admin-panel mb-4" id="fontes-rss" aria-labelledby="fontes-rss-titulo">
+						<div class="admin-panel-heading">
+							<div>
+								<p class="section-kicker">Fontes RSS</p>
+								<h2 id="fontes-rss-titulo">Gerenciamento de fontes</h2>
+								<p class="admin-note mb-0">
+									Cadastre, edite, ative e desative as fontes usadas pela sincronização manual.
+								</p>
+							</div>
+						</div>
+						<div class="api-state" id="news-sources-status" aria-live="polite"></div>
+						<div class="admin-news-source-layout">
+							<div class="table-responsive">
+								<table class="table admin-table">
+									<caption>
+										Fontes RSS cadastradas no back-end administrativo.
+									</caption>
+									<thead>
+										<tr>
+											<th scope="col">ID</th>
+											<th scope="col">Nome</th>
+											<th scope="col">URL RSS</th>
+											<th scope="col">Status</th>
+											<th scope="col">Atualização</th>
+											<th scope="col">Ação</th>
+										</tr>
+									</thead>
+									<tbody id="news-sources-body"></tbody>
+								</table>
+							</div>
+
+							<form class="admin-news-source-form" id="news-source-form">
+								<input type="hidden" id="news-source-id" />
+								<div class="admin-panel-heading">
+									<div>
+										<h3 id="news-source-form-title">Nova fonte RSS</h3>
+										<p class="admin-note mb-0" id="news-source-form-note">
+											Informe os dados da fonte para cadastrar uma nova origem de notícias.
+										</p>
+									</div>
+									<button class="btn btn-outline-primary btn-sm" type="button" id="news-source-clear-button">
+										<i class="bi bi-plus-circle" aria-hidden="true"></i>
+										Nova
+									</button>
+								</div>
+								<div>
+									<label class="form-label" for="news-source-name">Nome</label>
+									<input class="form-control" id="news-source-name" maxlength="120" required />
+								</div>
+								<div>
+									<label class="form-label" for="news-source-site-url">URL do site</label>
+									<input
+										class="form-control"
+										id="news-source-site-url"
+										maxlength="255"
+										required
+										type="url"
+									/>
+								</div>
+								<div>
+									<label class="form-label" for="news-source-rss-url">URL RSS</label>
+									<input
+										class="form-control"
+										id="news-source-rss-url"
+										maxlength="255"
+										required
+										type="url"
+									/>
+								</div>
+								<div>
+									<label class="form-label" for="news-source-status-select">Status</label>
+									<select class="form-select" id="news-source-status-select" required>
+										<option value="ativa">Ativa</option>
+										<option value="inativa">Inativa</option>
+									</select>
+								</div>
+								<button class="btn btn-primary" type="submit" id="news-source-submit">
+									<i class="bi bi-save" aria-hidden="true"></i>
+									Salvar fonte
+								</button>
+								<div class="api-state mb-0" id="news-source-form-feedback" aria-live="polite"></div>
+							</form>
+						</div>
+					</section>
+
 					<div class="admin-panel">
 						<div class="admin-panel-heading">
 							<div>

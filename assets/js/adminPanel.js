@@ -3,6 +3,7 @@
 
 	var REPORT_LIMIT = 20;
 	var ALLOWED_STATUSES = ["pendente", "em_analise", "resolvida", "rejeitada"];
+	var ALLOWED_SOURCE_STATUSES = ["ativa", "inativa"];
 	var state = {
 		post: {
 			page: 1,
@@ -17,6 +18,7 @@
 			hasNextPage: false
 		},
 		hasLoadError: false,
+		newsSources: [],
 		selectedReport: null
 	};
 
@@ -70,6 +72,10 @@
 		return ALLOWED_STATUSES.indexOf(status) >= 0 ? status : "pendente";
 	}
 
+	function normalizeSourceStatus(status) {
+		return ALLOWED_SOURCE_STATUSES.indexOf(status) >= 0 ? status : "inativa";
+	}
+
 	function formatStatus(status) {
 		var labels = {
 			pendente: "Pendente",
@@ -79,6 +85,10 @@
 		};
 
 		return labels[status] || "Pendente";
+	}
+
+	function formatSourceStatus(status) {
+		return normalizeSourceStatus(status) === "ativa" ? "Ativa" : "Inativa";
 	}
 
 	function formatDateTime(value) {
@@ -138,6 +148,16 @@
 		var badge = document.createElement("span");
 		badge.className = "badge-soft admin-status-badge admin-status-" + normalizeStatus(status);
 		badge.textContent = formatStatus(status);
+
+		return badge;
+	}
+
+	function createSourceStatusBadge(status) {
+		var normalizedStatus = normalizeSourceStatus(status);
+		var badge = document.createElement("span");
+
+		badge.className = "badge-soft admin-status-badge admin-source-status-" + normalizedStatus;
+		badge.textContent = formatSourceStatus(normalizedStatus);
 
 		return badge;
 	}
@@ -258,6 +278,121 @@
 		elements.prevButton.disabled = state[kind].page <= 1;
 		elements.nextButton.disabled = !state[kind].hasNextPage;
 		updateMetrics();
+	}
+
+	function getSourceFormData() {
+		return {
+			nome: getElement("news-source-name").value.trim(),
+			url_site: getElement("news-source-site-url").value.trim(),
+			url_rss: getElement("news-source-rss-url").value.trim(),
+			status: getElement("news-source-status-select").value
+		};
+	}
+
+	function resetSourceForm() {
+		getElement("news-source-id").value = "";
+		getElement("news-source-form").reset();
+		getElement("news-source-status-select").value = "ativa";
+		getElement("news-source-form-title").textContent = "Nova fonte RSS";
+		getElement("news-source-form-note").textContent = "Informe os dados da fonte para cadastrar uma nova origem de notícias.";
+		getElement("news-source-submit").innerHTML = '<i class="bi bi-save" aria-hidden="true"></i> Salvar fonte';
+		setStatus(getElement("news-source-form-feedback"), "", "loaded");
+	}
+
+	function fillSourceForm(source) {
+		getElement("news-source-id").value = String(source.id);
+		getElement("news-source-name").value = source.nome || "";
+		getElement("news-source-site-url").value = source.url_site || "";
+		getElement("news-source-rss-url").value = source.url_rss || "";
+		getElement("news-source-status-select").value = normalizeSourceStatus(source.status);
+		getElement("news-source-form-title").textContent = "Editar fonte RSS";
+		getElement("news-source-form-note").textContent = "Atualize os dados permitidos para esta fonte.";
+		getElement("news-source-submit").innerHTML = '<i class="bi bi-save" aria-hidden="true"></i> Atualizar fonte';
+		setStatus(getElement("news-source-form-feedback"), "", "loaded");
+	}
+
+	function renderNewsSourceRows() {
+		var body = getElement("news-sources-body");
+		var sources = state.newsSources;
+
+		clearElement(body);
+
+		if (!sources.length) {
+			var emptyRow = document.createElement("tr");
+			var emptyCell = document.createElement("td");
+
+			emptyCell.colSpan = 6;
+			emptyCell.textContent = "Nenhuma fonte RSS cadastrada.";
+			emptyRow.appendChild(emptyCell);
+			body.appendChild(emptyRow);
+			setStatus(getElement("news-sources-status"), "Nenhuma fonte RSS cadastrada.", "empty");
+			return;
+		}
+
+		sources.forEach(function (source) {
+			var row = document.createElement("tr");
+			var rssLink = document.createElement("a");
+			var rssCell = document.createElement("td");
+			var statusCell = document.createElement("td");
+			var actionCell = document.createElement("td");
+			var actions = document.createElement("div");
+			var editButton = document.createElement("button");
+			var statusButton = document.createElement("button");
+			var nextStatus = normalizeSourceStatus(source.status) === "ativa" ? "inativa" : "ativa";
+
+			rssLink.href = source.url_rss;
+			rssLink.rel = "noopener noreferrer";
+			rssLink.target = "_blank";
+			rssLink.textContent = truncateText(source.url_rss, 48);
+			rssCell.appendChild(rssLink);
+			statusCell.appendChild(createSourceStatusBadge(source.status));
+
+			editButton.className = "btn btn-outline-primary btn-sm";
+			editButton.type = "button";
+			editButton.innerHTML = '<i class="bi bi-pencil-square" aria-hidden="true"></i> Editar';
+			editButton.addEventListener("click", function () {
+				fillSourceForm(source);
+			});
+
+			statusButton.className = "btn btn-outline-primary btn-sm";
+			statusButton.type = "button";
+			statusButton.innerHTML = normalizeSourceStatus(source.status) === "ativa"
+				? '<i class="bi bi-pause-circle" aria-hidden="true"></i> Desativar'
+				: '<i class="bi bi-play-circle" aria-hidden="true"></i> Ativar';
+			statusButton.addEventListener("click", function () {
+				updateNewsSourceStatus(source.id, nextStatus);
+			});
+
+			actions.className = "admin-actions";
+			actions.append(editButton, statusButton);
+			actionCell.appendChild(actions);
+			row.append(
+				createCell(String(source.id)),
+				createCell(source.nome || "Não informado"),
+				rssCell,
+				statusCell,
+				createCell(formatDateTime(source.atualizado_em || source.criado_em)),
+				actionCell
+			);
+			body.appendChild(row);
+		});
+
+		setStatus(getElement("news-sources-status"), "", "loaded");
+	}
+
+	function loadNewsSources() {
+		setStatus(getElement("news-sources-status"), "Carregando fontes RSS...", "loading");
+
+		return requestAdmin("/admin/news-sources").then(function (response) {
+			state.newsSources = Array.isArray(response.sources) ? response.sources : [];
+			renderNewsSourceRows();
+		}).catch(function (error) {
+			state.hasLoadError = true;
+			state.newsSources = [];
+			renderNewsSourceRows();
+			setStatus(getElement("news-sources-status"), getFriendlyAdminMessage(error), "error");
+			setStatus(getElement("admin-global-status"), getFriendlyAdminMessage(error), "error");
+		});
 	}
 
 	function loadReports(kind) {
@@ -400,6 +535,62 @@
 		});
 	}
 
+	function handleNewsSourceSubmit(event) {
+		event.preventDefault();
+
+		var sourceId = getElement("news-source-id").value;
+		var submitButton = getElement("news-source-submit");
+		var data = getSourceFormData();
+		var isEditing = Boolean(sourceId);
+		var path = isEditing
+			? "/admin/news-sources/" + encodeURIComponent(sourceId)
+			: "/admin/news-sources";
+		var method = isEditing ? "PATCH" : "POST";
+
+		if (ALLOWED_SOURCE_STATUSES.indexOf(data.status) < 0) {
+			setStatus(getElement("news-source-form-feedback"), "Status inválido. Escolha uma opção permitida.", "error");
+			return;
+		}
+
+		submitButton.disabled = true;
+		setStatus(getElement("news-source-form-feedback"), "Salvando fonte RSS...", "loading");
+
+		requestAdmin(path, {
+			method: method,
+			body: data
+		}).then(function (response) {
+			var message = response.message || "Fonte RSS salva com sucesso.";
+
+			resetSourceForm();
+			setStatus(getElement("news-source-form-feedback"), message, "success");
+			return loadNewsSources();
+		}).catch(function (error) {
+			setStatus(getElement("news-source-form-feedback"), getFriendlyAdminMessage(error), "error");
+		}).finally(function () {
+			submitButton.disabled = false;
+		});
+	}
+
+	function updateNewsSourceStatus(sourceId, status) {
+		setStatus(getElement("news-sources-status"), "Atualizando status da fonte RSS...", "loading");
+
+		return requestAdmin("/admin/news-sources/" + encodeURIComponent(sourceId) + "/status", {
+			method: "PATCH",
+			body: {
+				status: status
+			}
+		}).then(function (response) {
+			setStatus(
+				getElement("news-sources-status"),
+				response.message || "Status da fonte RSS atualizado com sucesso.",
+				"success"
+			);
+			return loadNewsSources();
+		}).catch(function (error) {
+			setStatus(getElement("news-sources-status"), getFriendlyAdminMessage(error), "error");
+		});
+	}
+
 	function renderSyncErrors(errors) {
 		var container = getElement("sync-errors");
 
@@ -476,6 +667,8 @@
 		});
 
 		getElement("status-form").addEventListener("submit", handleStatusUpdate);
+		getElement("news-source-form").addEventListener("submit", handleNewsSourceSubmit);
+		getElement("news-source-clear-button").addEventListener("click", resetSourceForm);
 		getElement("sync-news-button").addEventListener("click", handleNewsSync);
 	}
 
@@ -485,8 +678,9 @@
 		}
 
 		bindEvents();
+		resetSourceForm();
 		setStatus(getElement("admin-global-status"), "Carregando dados administrativos...", "loading");
-		Promise.all([loadReports("post"), loadReports("comment")]).then(function () {
+		Promise.all([loadReports("post"), loadReports("comment"), loadNewsSources()]).then(function () {
 			if (!state.hasLoadError) {
 				setStatus(getElement("admin-global-status"), "", "loaded");
 			}
