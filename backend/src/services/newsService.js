@@ -1,5 +1,10 @@
 const pool = require('../config/database');
 const { parseFeed } = require('./rssService');
+const {
+  MAX_NEWS_PER_SYNC,
+  MIN_DESIRED_NEWS_PER_SYNC,
+  scoreNewsCandidate
+} = require('../utils/newsPolicy');
 
 const ACTIVE_SOURCE_STATUS = 'ativa';
 const DUPLICATE_ENTRY_CODE = 'ER_DUP_ENTRY';
@@ -58,7 +63,7 @@ function stripHtml(value) {
   return value.replace(/<[^>]*>/g, ' ');
 }
 
-function formatDateForMysql(value) {
+function parseRssDate(value) {
   if (!value) {
     return null;
   }
@@ -66,6 +71,16 @@ function formatDateForMysql(value) {
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date;
+}
+
+function formatDateForMysql(value) {
+  const date = value instanceof Date ? value : parseRssDate(value);
+
+  if (!date) {
     return null;
   }
 
@@ -93,23 +108,36 @@ function mapSourceRow(row) {
   };
 }
 
-function mapRssItemToNews(sourceId, item) {
+function mapRssItemToNews(source, item) {
   const title = truncateText(item.title, 180);
   const url = normalizeHttpUrl(item.link, 500);
   const summarySource = item.contentSnippet || item.summary || item.content || item['content:encoded'];
+  const publishedDate = parseRssDate(item.isoDate || item.pubDate);
 
   if (!title || !url) {
     return null;
   }
 
   return {
-    fonte_id: sourceId,
+    fonte_id: source.id,
     titulo: title,
     resumo: truncateText(stripHtml(summarySource), 300),
     url_original: url,
-    publicada_em: formatDateForMysql(item.isoDate || item.pubDate),
+    publicada_em: formatDateForMysql(publishedDate),
     status: PUBLISHED_NEWS_STATUS
   };
+}
+
+function sortCandidatesByPolicy(a, b) {
+  if (a.window_priority !== b.window_priority) {
+    return a.window_priority - b.window_priority;
+  }
+
+  if (b.relevance_score !== a.relevance_score) {
+    return b.relevance_score - a.relevance_score;
+  }
+
+  return b.published_at.getTime() - a.published_at.getTime();
 }
 
 async function listPublishedNews(filters) {
@@ -225,8 +253,21 @@ async function insertNewsIfNew(news) {
   }
 }
 
+async function insertCandidate(candidate, result) {
+  const { relevance_score, published_at, window_priority, ...news } = candidate;
+  const insertResult = await insertNewsIfNew(news);
+
+  if (insertResult === 'created') {
+    result.created_count += 1;
+  } else if (insertResult === 'duplicate') {
+    result.duplicate_count += 1;
+  }
+}
+
 async function syncNewsFromRss() {
   const sources = await listActiveSources();
+  const candidates = [];
+  const now = new Date();
   const result = {
     sources_processed: sources.length,
     created_count: 0,
@@ -240,18 +281,21 @@ async function syncNewsFromRss() {
       const items = Array.isArray(feed.items) ? feed.items : [];
 
       for (const item of items) {
-        const news = mapRssItemToNews(source.id, item);
+        const news = mapRssItemToNews(source, item);
 
         if (!news) {
           continue;
         }
 
-        const insertResult = await insertNewsIfNew(news);
+        const policyResult = scoreNewsCandidate(news, source, now);
 
-        if (insertResult === 'created') {
-          result.created_count += 1;
-        } else if (insertResult === 'duplicate') {
-          result.duplicate_count += 1;
+        if (policyResult.accepted) {
+          candidates.push({
+            ...news,
+            relevance_score: policyResult.score,
+            published_at: policyResult.publishedDate,
+            window_priority: policyResult.windowPriority
+          });
         }
       }
     } catch (error) {
@@ -261,6 +305,30 @@ async function syncNewsFromRss() {
         message: 'Não foi possível sincronizar esta fonte.'
       });
     }
+  }
+
+  candidates.sort(sortCandidatesByPolicy);
+
+  const recentCandidates = candidates.filter((candidate) => candidate.window_priority < 2);
+  const archiveCandidates = candidates.filter((candidate) => candidate.window_priority === 2);
+
+  for (const candidate of recentCandidates) {
+    if (result.created_count >= MAX_NEWS_PER_SYNC) {
+      break;
+    }
+
+    await insertCandidate(candidate, result);
+  }
+
+  for (const candidate of archiveCandidates) {
+    if (
+      result.created_count >= MAX_NEWS_PER_SYNC ||
+      result.created_count >= MIN_DESIRED_NEWS_PER_SYNC
+    ) {
+      break;
+    }
+
+    await insertCandidate(candidate, result);
   }
 
   return result;
