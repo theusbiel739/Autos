@@ -1,6 +1,51 @@
+:root {
+	--autos-cyan: #18b9d7;
+	--autos-logo-green: #1fc95b;
+	--autos-logo-yellow: #f5df32;
+	--autos-red-detail: #d71920;
+}
+
 .page-hero {
 	background: var(--autos-soft);
 	padding: 8.5rem 0 4rem;
+}
+
+.page-hero-brand {
+	background:
+		linear-gradient(135deg, rgba(245, 248, 251, 0.96), rgba(234, 246, 241, 0.92)),
+		linear-gradient(90deg, rgba(24, 185, 215, 0.14), rgba(31, 201, 91, 0.12));
+	overflow: hidden;
+	position: relative;
+}
+
+.page-hero-brand::after {
+	background: linear-gradient(90deg, var(--autos-cyan), var(--autos-logo-green), var(--autos-logo-yellow));
+	bottom: 0;
+	content: "";
+	height: 0.3rem;
+	left: 0;
+	position: absolute;
+	right: 0;
+}
+
+.page-hero-news {
+	background:
+		radial-gradient(circle at 86% 18%, rgba(245, 223, 50, 0.22), transparent 12rem),
+		linear-gradient(135deg, rgba(245, 248, 251, 0.98), rgba(234, 246, 241, 0.92)),
+		linear-gradient(90deg, rgba(24, 185, 215, 0.16), rgba(37, 95, 133, 0.1));
+}
+
+.page-hero-community {
+	background:
+		radial-gradient(circle at 86% 18%, rgba(31, 201, 91, 0.16), transparent 12rem),
+		linear-gradient(135deg, rgba(245, 248, 251, 0.98), rgba(234, 246, 241, 0.92)),
+		linear-gradient(90deg, rgba(31, 201, 91, 0.14), rgba(245, 223, 50, 0.12));
+}
+
+.page-hero-about {
+	background:
+		linear-gradient(135deg, rgba(245, 248, 251, 0.98), rgba(255, 255, 255, 0.94)),
+		linear-gradient(90deg, rgba(37, 95, 133, 0.1), rgba(24, 185, 215, 0.08));
 }
 
 .page-hero .lead {
@@ -16,6 +61,37 @@
 	letter-spacing: 0.12em;
 	margin-bottom: 0.75rem;
 	text-transform: uppercase;
+}
+
+.brand-hero-logo {
+	display: inline-block;
+	filter: drop-shadow(0 0.8rem 1rem rgba(13, 29, 37, 0.18));
+	height: auto;
+	margin-bottom: 1rem;
+	max-width: 8.5rem;
+	width: 38vw;
+}
+
+.brand-hero-mascot {
+	margin-left: auto;
+	max-width: 20rem;
+	position: relative;
+}
+
+.brand-hero-mascot img {
+	display: block;
+	filter: drop-shadow(0 1.35rem 1.4rem rgba(13, 29, 37, 0.22));
+	height: auto;
+	width: 100%;
+}
+
+.page-hero-mascot {
+	display: block;
+	filter: drop-shadow(0 1rem 1rem rgba(32, 48, 58, 0.14));
+	height: auto;
+	max-height: 15rem;
+	max-width: 12.5rem;
+	width: 100%;
 }
 
 .page-card,
@@ -64,6 +140,7 @@
 .notice-panel {
 	background: var(--autos-mint);
 	border-color: #c9e5da;
+	border-left: 0.35rem solid var(--autos-cyan);
 	color: var(--autos-blue-dark);
 }
 
@@ -74,15 +151,22 @@
 }
 
 .learning-index {
+	gap: 1.15rem;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .learning-link-card {
 	color: inherit;
 	display: block;
+	background:
+		linear-gradient(180deg, rgba(24, 185, 215, 0.07), rgba(255, 255, 255, 0) 46%),
+		var(--autos-white);
+	overflow: hidden;
 	min-height: 15rem;
+	position: relative;
 	text-decoration: none;
 	transition:
+		background-color 160ms ease,
 		border-color 160ms ease,
 		box-shadow 160ms ease,
 		transform 160ms ease;
@@ -94,6 +178,151 @@
 	box-shadow: 0 1.1rem 2.4rem rgba(37, 95, 133, 0.14);
 	color: inherit;
 	transform: translateY(-0.12rem);
+}
+
+.learning-link-card::before {
+	background: var(--autos-cyan);
+	content: "";
+	display: block;
+	height: 0.28rem;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.learning-link-card:nth-child(2)::before,
+.learning-link-card:nth-child(5)::before {
+	background: var(--autos-logo-green);
+}
+
+.learning-link-card:nth-child(2),
+.learning-link-card:nth-child(5) {
+	background:
+		linear-gradient(180deg, rgba(31, 201, 91, 0.08), rgba(255, 255, 255, 0) 46%),
+		var(--autos-white);
+}
+
+.learning-link-card:nth-child(3)::before,
+.learning-link-card:nth-child(6)::before {
+	background: var(--autos-logo-yellow);
+}
+
+.learning-link-card:nth-child(3),
+.learning-link-card:nth-child(6) {
+	background:
+		linear-gradient(180deg, rgba(245, 223, 50, 0.12), rgba(255, 255, 255, 0) 46%),
+		var(--autos-white);
+}
+
+.learning-link-card:nth-child(4)::before {
+	background: var(--autos-blue);
+}
+
+.learning-link-card:nth-child(4) {
+	background:
+		linear-gradient(180deg, rgba(37, 95, 133, 0.07), rgba(255, 255, 255, 0) 46%),
+		var(--autos-white);
+}
+
+.learning-link-card i {
+	align-items: center;
+	background: rgba(24, 185, 215, 0.12);
+	border-radius: 8px;
+	box-shadow: inset 0 0 0 1px rgba(18, 106, 123, 0.08);
+	color: #126a7b;
+	display: inline-flex;
+	height: 3rem;
+	justify-content: center;
+	margin-bottom: 1.15rem;
+	width: 3rem;
+}
+
+.learning-index-card {
+	background:
+		linear-gradient(135deg, rgba(24, 185, 215, 0.14), rgba(255, 255, 255, 0.78) 58%),
+		var(--autos-white);
+	border-color: rgba(24, 185, 215, 0.28);
+	box-shadow: 0 1rem 2.1rem rgba(32, 48, 58, 0.08);
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	min-height: 16.5rem;
+	padding: 1.75rem;
+}
+
+.learning-index-card:hover,
+.learning-index-card:focus-visible {
+	border-color: rgba(37, 95, 133, 0.52);
+	box-shadow: 0 1.25rem 2.6rem rgba(37, 95, 133, 0.16);
+	transform: translateY(-0.18rem);
+}
+
+.learning-index-card::before {
+	height: 0.42rem;
+}
+
+.learning-index-card:nth-child(2),
+.learning-index-card:nth-child(5) {
+	background:
+		linear-gradient(135deg, rgba(31, 201, 91, 0.14), rgba(255, 255, 255, 0.78) 58%),
+		var(--autos-white);
+	border-color: rgba(31, 201, 91, 0.26);
+}
+
+.learning-index-card:nth-child(3),
+.learning-index-card:nth-child(6) {
+	background:
+		linear-gradient(135deg, rgba(245, 223, 50, 0.2), rgba(255, 255, 255, 0.8) 58%),
+		var(--autos-white);
+	border-color: rgba(191, 163, 27, 0.24);
+}
+
+.learning-index-card:nth-child(4) {
+	background:
+		linear-gradient(135deg, rgba(37, 95, 133, 0.13), rgba(255, 255, 255, 0.8) 58%),
+		var(--autos-white);
+	border-color: rgba(37, 95, 133, 0.28);
+}
+
+.learning-index-card i {
+	border-radius: 999px;
+	box-shadow:
+		inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+		0 0.55rem 1rem rgba(32, 48, 58, 0.09);
+	font-size: 1.35rem;
+	height: 3.25rem;
+	margin-bottom: 0.55rem;
+	width: 3.25rem;
+}
+
+.learning-index-card h3 {
+	margin-bottom: 0.25rem;
+}
+
+.learning-index-card p {
+	margin-bottom: 0.55rem;
+}
+
+.learning-index-card span {
+	margin-top: auto;
+}
+
+.learning-link-card:nth-child(2) i,
+.learning-link-card:nth-child(5) i {
+	background: rgba(31, 201, 91, 0.12);
+	color: #17633a;
+}
+
+.learning-link-card:nth-child(3) i,
+.learning-link-card:nth-child(6) i {
+	background: rgba(245, 223, 50, 0.22);
+	color: #6a5610;
+}
+
+.learning-link-card:nth-child(4) i {
+	background: rgba(37, 95, 133, 0.12);
+	color: var(--autos-blue-dark);
 }
 
 .learning-link-card p {
@@ -109,6 +338,14 @@
 	text-underline-offset: 0.25em;
 }
 
+.learning-index .learning-index-card p {
+	margin-bottom: 0.55rem;
+}
+
+.learning-index .learning-index-card span {
+	margin-top: auto;
+}
+
 .learning-section {
 	scroll-margin-top: 5rem;
 }
@@ -119,12 +356,66 @@
 }
 
 .learning-article {
+	background:
+		linear-gradient(180deg, rgba(24, 185, 215, 0.11), rgba(255, 255, 255, 0.88) 7.5rem, rgba(255, 255, 255, 0) 12rem),
+		var(--autos-white);
+	border-color: rgba(24, 185, 215, 0.3);
+	overflow: hidden;
+	position: relative;
 	scroll-margin-top: 6rem;
+}
+
+.learning-article::before {
+	background: var(--autos-cyan);
+	content: "";
+	display: block;
+	height: 0.52rem;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.learning-article:nth-child(2),
+.learning-article:nth-child(5) {
+	background:
+		linear-gradient(180deg, rgba(31, 201, 91, 0.1), rgba(255, 255, 255, 0.88) 7.5rem, rgba(255, 255, 255, 0) 12rem),
+		var(--autos-white);
+	border-color: rgba(31, 201, 91, 0.28);
+}
+
+.learning-article:nth-child(2)::before,
+.learning-article:nth-child(5)::before {
+	background: var(--autos-logo-green);
+}
+
+.learning-article:nth-child(3),
+.learning-article:nth-child(6) {
+	background:
+		linear-gradient(180deg, rgba(245, 223, 50, 0.16), rgba(255, 255, 255, 0.9) 7.5rem, rgba(255, 255, 255, 0) 12rem),
+		var(--autos-white);
+	border-color: rgba(191, 163, 27, 0.28);
+}
+
+.learning-article:nth-child(3)::before,
+.learning-article:nth-child(6)::before {
+	background: var(--autos-logo-yellow);
+}
+
+.learning-article:nth-child(4) {
+	background:
+		linear-gradient(180deg, rgba(37, 95, 133, 0.1), rgba(255, 255, 255, 0.9) 7.5rem, rgba(255, 255, 255, 0) 12rem),
+		var(--autos-white);
+	border-color: rgba(37, 95, 133, 0.3);
+}
+
+.learning-article:nth-child(4)::before {
+	background: var(--autos-blue);
 }
 
 .learning-article-header {
 	align-items: flex-start;
-	border-bottom: 1px solid var(--autos-border);
+	border-bottom: 1px solid rgba(24, 185, 215, 0.2);
 	display: flex;
 	gap: 1rem;
 	margin-bottom: 1.25rem;
@@ -132,11 +423,50 @@
 }
 
 .learning-article-header i {
-	color: var(--autos-blue);
-	font-size: 2rem;
+	align-items: center;
+	background: rgba(24, 185, 215, 0.12);
+	border-radius: 8px;
+	color: #126a7b;
+	display: inline-flex;
+	flex: 0 0 auto;
+	font-size: 1.45rem;
+	height: 3rem;
+	justify-content: center;
 	line-height: 1;
 	margin-bottom: 0;
 	margin-top: 0.15rem;
+	width: 3rem;
+}
+
+.learning-article:nth-child(2) .learning-article-header,
+.learning-article:nth-child(5) .learning-article-header {
+	border-bottom-color: rgba(31, 201, 91, 0.2);
+}
+
+.learning-article:nth-child(2) .learning-article-header i,
+.learning-article:nth-child(5) .learning-article-header i {
+	background: rgba(31, 201, 91, 0.12);
+	color: #17633a;
+}
+
+.learning-article:nth-child(3) .learning-article-header,
+.learning-article:nth-child(6) .learning-article-header {
+	border-bottom-color: rgba(191, 163, 27, 0.2);
+}
+
+.learning-article:nth-child(3) .learning-article-header i,
+.learning-article:nth-child(6) .learning-article-header i {
+	background: rgba(245, 223, 50, 0.22);
+	color: #6a5610;
+}
+
+.learning-article:nth-child(4) .learning-article-header {
+	border-bottom-color: rgba(37, 95, 133, 0.22);
+}
+
+.learning-article:nth-child(4) .learning-article-header i {
+	background: rgba(37, 95, 133, 0.12);
+	color: var(--autos-blue-dark);
 }
 
 .learning-article .card-meta {
@@ -149,12 +479,20 @@
 }
 
 .learning-article h4 {
+	border-top: 1px solid rgba(217, 229, 234, 0.72);
 	color: var(--autos-blue-dark);
 	font-size: 0.95rem;
 	font-weight: 820;
 	letter-spacing: 0;
-	margin: 1.2rem 0 0.45rem;
+	margin: 1.25rem 0 0.45rem;
+	padding-top: 1rem;
 	text-transform: uppercase;
+}
+
+.learning-article .learning-article-header + h4 {
+	border-top: 0;
+	margin-top: 0;
+	padding-top: 0;
 }
 
 .learning-article p {
@@ -174,13 +512,38 @@
 }
 
 .learning-disclaimer {
-	background: var(--autos-mint);
-	border: 1px solid #c9e5da;
+	background:
+		linear-gradient(90deg, rgba(24, 185, 215, 0.08), rgba(234, 246, 241, 0.9));
+	border: 1px solid rgba(24, 185, 215, 0.22);
+	border-left: 0.35rem solid var(--autos-cyan);
 	border-radius: 8px;
 	color: var(--autos-blue-dark) !important;
 	font-weight: 650;
 	margin: 1.25rem 0 0;
 	padding: 0.85rem 1rem;
+}
+
+.learning-article:nth-child(2) .learning-disclaimer,
+.learning-article:nth-child(5) .learning-disclaimer {
+	background:
+		linear-gradient(90deg, rgba(31, 201, 91, 0.08), rgba(234, 246, 241, 0.9));
+	border-color: rgba(31, 201, 91, 0.22);
+	border-left-color: var(--autos-logo-green);
+}
+
+.learning-article:nth-child(3) .learning-disclaimer,
+.learning-article:nth-child(6) .learning-disclaimer {
+	background:
+		linear-gradient(90deg, rgba(245, 223, 50, 0.12), rgba(255, 255, 255, 0.9));
+	border-color: rgba(191, 163, 27, 0.22);
+	border-left-color: var(--autos-logo-yellow);
+}
+
+.learning-article:nth-child(4) .learning-disclaimer {
+	background:
+		linear-gradient(90deg, rgba(37, 95, 133, 0.08), rgba(245, 248, 251, 0.92));
+	border-color: rgba(37, 95, 133, 0.22);
+	border-left-color: var(--autos-blue);
 }
 
 .api-state {
@@ -210,10 +573,37 @@
 	background: var(--autos-white);
 }
 
+[data-news-status].api-state.is-empty,
+[data-posts-status].api-state.is-empty {
+	background:
+		url("../img/brand/pecinha-sentado.png") 1.05rem 50% / 6.2rem auto no-repeat,
+		linear-gradient(90deg, rgba(234, 246, 241, 0.96), rgba(255, 255, 255, 0.98));
+	border-color: #c9e5da;
+	border-left: 0.35rem solid var(--autos-logo-green);
+	box-shadow: 0 1rem 2.2rem rgba(32, 48, 58, 0.07);
+	color: var(--autos-blue-dark);
+	font-weight: 750;
+	min-height: 8.35rem;
+	padding: 1.55rem 1.35rem 1.55rem 8.45rem;
+}
+
 .api-state.is-error {
 	background: #fff7f7;
 	border-color: #d9a7a7;
 	color: #7f2525;
+}
+
+[data-news-status].api-state.is-error,
+[data-posts-status].api-state.is-error,
+[data-community-feedback].api-state.is-error {
+	background:
+		url("../img/brand/pecinha-sentado-triste.png") 1.05rem 50% / 6.2rem auto no-repeat,
+		linear-gradient(90deg, #fff7f7, #ffffff);
+	border-left: 0.35rem solid var(--autos-red-detail);
+	box-shadow: 0 0.8rem 1.8rem rgba(127, 37, 37, 0.07);
+	font-weight: 700;
+	min-height: 8.35rem;
+	padding: 1.55rem 1.35rem 1.55rem 8.45rem;
 }
 
 .api-state.is-success {
@@ -346,6 +736,35 @@
 .form-panel {
 	margin-inline: auto;
 	max-width: 36rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.form-panel::before {
+	background: linear-gradient(90deg, var(--autos-cyan), var(--autos-logo-green), var(--autos-logo-yellow));
+	content: "";
+	display: block;
+	height: 0.35rem;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.auth-brand-mark {
+	align-items: center;
+	display: flex;
+	height: auto;
+	justify-content: center;
+	margin-bottom: 1.35rem;
+	width: 5.4rem;
+}
+
+.auth-brand-mark img {
+	display: block;
+	filter: drop-shadow(0 0.45rem 0.55rem rgba(32, 48, 58, 0.12));
+	height: auto;
+	width: 100%;
 }
 
 .form-label {
@@ -375,6 +794,216 @@
 	height: 5rem;
 	justify-content: center;
 	width: 5rem;
+}
+
+.feature-card {
+	position: relative;
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease;
+}
+
+.feature-card:hover,
+.feature-card:focus-within {
+	border-color: rgba(24, 185, 215, 0.45);
+	box-shadow: 0 1.2rem 2.6rem rgba(37, 95, 133, 0.13);
+	transform: translateY(-0.12rem);
+}
+
+.brand-card-icon {
+	align-items: center;
+	border-radius: 8px;
+	display: inline-flex;
+	height: 3.15rem;
+	justify-content: center;
+	margin-bottom: 1rem;
+	width: 3.15rem;
+}
+
+.brand-card-icon i {
+	color: inherit;
+	font-size: 1.55rem;
+	margin: 0;
+}
+
+.brand-card-icon-cyan {
+	background: rgba(24, 185, 215, 0.13);
+	color: #126a7b;
+}
+
+.brand-card-icon-green {
+	background: rgba(31, 201, 91, 0.13);
+	color: #17633a;
+}
+
+.brand-card-icon-yellow {
+	background: rgba(245, 223, 50, 0.2);
+	color: #6a5610;
+}
+
+.content-card {
+	background:
+		linear-gradient(180deg, rgba(24, 185, 215, 0.07), rgba(255, 255, 255, 0) 8rem),
+		var(--autos-white);
+	border-color: rgba(24, 185, 215, 0.22);
+	overflow: hidden;
+	position: relative;
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease;
+}
+
+.content-card::before,
+.post-card::before {
+	background: linear-gradient(90deg, var(--autos-cyan), var(--autos-logo-green), var(--autos-logo-yellow));
+	content: "";
+	display: block;
+	height: 0.34rem;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.content-card:hover,
+.content-card:focus-within,
+.post-card:hover,
+.post-card:focus-within {
+	border-color: rgba(37, 95, 133, 0.36);
+	box-shadow: 0 1.2rem 2.5rem rgba(37, 95, 133, 0.13);
+	transform: translateY(-0.12rem);
+}
+
+.content-card .card-category {
+	background: rgba(24, 185, 215, 0.12);
+	border: 1px solid rgba(24, 185, 215, 0.2);
+	border-radius: 999px;
+	color: #126a7b;
+	display: inline-flex;
+	letter-spacing: 0.08em;
+	padding: 0.32rem 0.68rem;
+}
+
+.content-card .read-link {
+	align-items: center;
+	background: var(--autos-blue);
+	border-radius: 999px;
+	color: var(--autos-white);
+	display: inline-flex;
+	font-size: 0.95rem;
+	gap: 0.35rem;
+	padding: 0.55rem 0.9rem;
+	text-decoration: none;
+	transition:
+		background-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease;
+}
+
+.content-card .read-link::after {
+	content: "↗";
+	font-size: 0.9rem;
+	line-height: 1;
+}
+
+.content-card .read-link:hover,
+.content-card .read-link:focus-visible {
+	background: var(--autos-blue-dark);
+	box-shadow: 0 0.65rem 1.3rem rgba(37, 95, 133, 0.2);
+	color: var(--autos-white);
+	transform: translateY(-0.08rem);
+}
+
+.post-card {
+	background:
+		linear-gradient(180deg, rgba(31, 201, 91, 0.06), rgba(255, 255, 255, 0) 8rem),
+		var(--autos-white);
+	border-color: rgba(31, 201, 91, 0.2);
+	overflow: hidden;
+	position: relative;
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease;
+}
+
+.post-card::before {
+	background: linear-gradient(90deg, var(--autos-logo-green), var(--autos-cyan), var(--autos-logo-yellow));
+}
+
+.post-card .badge-soft {
+	background: rgba(31, 201, 91, 0.12);
+	border-color: rgba(31, 201, 91, 0.24);
+	color: #17633a;
+}
+
+.post-card .post-actions {
+	border-top-color: rgba(31, 201, 91, 0.18);
+}
+
+.value-card {
+	overflow: hidden;
+	position: relative;
+}
+
+.value-card::before {
+	background: var(--autos-cyan);
+	content: "";
+	display: block;
+	height: 0.28rem;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.value-card i {
+	align-items: center;
+	background: rgba(24, 185, 215, 0.12);
+	border-radius: 8px;
+	color: #126a7b;
+	display: inline-flex;
+	height: 3rem;
+	justify-content: center;
+	width: 3rem;
+}
+
+.value-card-green::before {
+	background: var(--autos-logo-green);
+}
+
+.value-card-green i {
+	background: rgba(31, 201, 91, 0.12);
+	color: #17633a;
+}
+
+.value-card-blue::before {
+	background: var(--autos-blue);
+}
+
+.value-card-blue i {
+	background: rgba(37, 95, 133, 0.12);
+	color: var(--autos-blue-dark);
+}
+
+.value-card-yellow::before {
+	background: var(--autos-logo-yellow);
+}
+
+.value-card-yellow i {
+	background: rgba(245, 223, 50, 0.22);
+	color: #6a5610;
+}
+
+.value-card-red::before {
+	background: var(--autos-red-detail);
+}
+
+.value-card-red i {
+	background: rgba(215, 25, 32, 0.08);
+	color: #7f2525;
 }
 
 .stat-card,
@@ -653,6 +1282,29 @@
 @media (max-width: 767.98px) {
 	.page-hero {
 		padding: 7.5rem 0 3.5rem;
+	}
+
+	.brand-hero-logo {
+		max-width: 7rem;
+	}
+
+	[data-news-status].api-state.is-empty,
+	[data-posts-status].api-state.is-empty {
+		background:
+			url("../img/brand/pecinha-sentado.png") right 0.85rem bottom 0.55rem / 4.5rem auto no-repeat,
+			linear-gradient(90deg, rgba(234, 246, 241, 0.94), rgba(255, 255, 255, 0.98));
+		min-height: 7rem;
+		padding: 1rem 5.9rem 1rem 1rem;
+	}
+
+	[data-news-status].api-state.is-error,
+	[data-posts-status].api-state.is-error,
+	[data-community-feedback].api-state.is-error {
+		background:
+			url("../img/brand/pecinha-sentado-triste.png") right 0.85rem bottom 0.55rem / 4.5rem auto no-repeat,
+			linear-gradient(90deg, #fff7f7, #ffffff);
+		min-height: 7rem;
+		padding: 1rem 5.9rem 1rem 1rem;
 	}
 
 	.post-actions {
