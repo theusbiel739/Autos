@@ -1,12 +1,14 @@
 (function () {
 	"use strict";
 
-	var CACHE_NAME = "autos-static-v5";
+	var CACHE_NAME = "autos-static-v8";
 	var STATIC_ASSETS = [
 		"/",
 		"/index.html",
 		"/aprender.html",
+		"/noticias.html",
 		"/comunidade.html",
+		"/sobre.html",
 		"/login.html",
 		"/cadastro.html",
 		"/post.html",
@@ -22,6 +24,10 @@
 		"/assets/js/adminPanel.js",
 		"/assets/js/pwa.js",
 		"/assets/js/reports.js",
+		"/assets/img/brand/autos-logo.png",
+		"/assets/img/brand/pecinha-mascote.png",
+		"/assets/img/brand/pecinha-sentado.png",
+		"/assets/img/brand/pecinha-sentado-triste.png",
 		"/assets/icons/icon-192.png",
 		"/assets/icons/icon-512.png",
 		"/images/pexels-tara-winstead-8386122.jpg"
