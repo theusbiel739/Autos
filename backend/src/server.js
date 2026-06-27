@@ -1,8 +1,10 @@
 const app = require('./app');
 const env = require('./config/env');
 
-const server = app.listen(env.port, () => {
-  console.log(`AUTOS API running on port ${env.port}`);
+const HOST = '0.0.0.0';
+
+const server = app.listen(env.port, HOST, () => {
+  console.log(`AUTOS API running on ${HOST}:${env.port}`);
 });
 
 process.on('unhandledRejection', (error) => {

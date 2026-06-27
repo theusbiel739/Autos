@@ -9,7 +9,7 @@
 			return window.location.protocol + "//" + hostname + ":3001/api";
 		}
 
-		return "http://localhost:3001/api";
+		return "/api";
 	}
 
 	var API_BASE_URL = getApiBaseUrl();
