@@ -24,6 +24,9 @@ body {
 
 a {
 	color: var(--autos-blue);
+	transition:
+		color 160ms ease,
+		text-decoration-color 160ms ease;
 }
 
 a:hover {
@@ -72,9 +75,13 @@ button:focus-visible,
 .navbar .nav-link {
 	color: var(--autos-ink);
 	font-weight: 650;
+	position: relative;
+	transition: color 160ms ease;
 }
 
-.navbar .nav-link:hover {
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible,
+.navbar .nav-link[aria-current="page"] {
 	color: var(--autos-blue);
 }
 
@@ -82,6 +89,23 @@ button:focus-visible,
 	border-radius: 999px;
 	font-weight: 700;
 	padding-inline: 1.35rem;
+	transition:
+		background-color 160ms ease,
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		color 160ms ease,
+		transform 160ms ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+	box-shadow: 0 0.65rem 1.35rem rgba(37, 95, 133, 0.18);
+	transform: translateY(-0.08rem);
+}
+
+.btn-light:hover,
+.btn-light:focus-visible {
+	box-shadow: 0 0.65rem 1.35rem rgba(13, 29, 37, 0.16);
 }
 
 .btn-primary {
@@ -190,6 +214,23 @@ h3 {
 	border-radius: 8px;
 	box-shadow: 0 1rem 2.2rem rgba(32, 48, 58, 0.07);
 	padding: 1.6rem;
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease;
+}
+
+.feature-card:hover,
+.feature-card:focus-within,
+.content-card:hover,
+.content-card:focus-within,
+.community-card:hover,
+.community-card:focus-within,
+.benefit-item:hover,
+.benefit-item:focus-within {
+	border-color: rgba(37, 95, 133, 0.34);
+	box-shadow: 0 1.15rem 2.45rem rgba(37, 95, 133, 0.12);
+	transform: translateY(-0.1rem);
 }
 
 .feature-card i,
@@ -219,7 +260,8 @@ h3 {
 
 .demo-source {
 	background: var(--autos-mint);
-	border-radius: 6px;
+	border: 1px solid #c9e5da;
+	border-radius: 999px;
 	color: var(--autos-blue-dark);
 	display: inline-block;
 	font-size: 0.9rem;
@@ -234,6 +276,15 @@ h3 {
 	margin-top: 0.7rem;
 	text-decoration-thickness: 0.12em;
 	text-underline-offset: 0.25em;
+	transition:
+		color 160ms ease,
+		text-decoration-color 160ms ease,
+		transform 160ms ease;
+}
+
+.read-link:hover,
+.read-link:focus-visible {
+	transform: translateY(-0.06rem);
 }
 
 .phone-mockup {
@@ -345,7 +396,7 @@ h3 {
 
 .community-icon {
 	align-items: center;
-	background: var(--autos-blue);
+	background: linear-gradient(135deg, var(--autos-blue), var(--autos-green));
 	border-radius: 50%;
 	color: var(--autos-white);
 	display: flex;
@@ -434,5 +485,20 @@ h3 {
 		animation-iteration-count: 1 !important;
 		scroll-behavior: auto !important;
 		transition-duration: 0.01ms !important;
+	}
+
+	.btn:hover,
+	.btn:focus-visible,
+	.feature-card:hover,
+	.feature-card:focus-within,
+	.content-card:hover,
+	.content-card:focus-within,
+	.community-card:hover,
+	.community-card:focus-within,
+	.benefit-item:hover,
+	.benefit-item:focus-within,
+	.read-link:hover,
+	.read-link:focus-visible {
+		transform: none;
 	}
 }
