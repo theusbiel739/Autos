@@ -806,8 +806,9 @@
 	display: flex;
 	height: auto;
 	justify-content: center;
-	margin-bottom: 1.35rem;
-	width: 5.4rem;
+	margin: 0 auto 1.35rem;
+	max-width: 100%;
+	width: min(5.4rem, 42vw);
 }
 
 .auth-brand-mark img {

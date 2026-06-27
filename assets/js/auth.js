@@ -109,6 +109,7 @@
 
 			window.AutosApi.setStatus(status, response.message || "Login realizado com sucesso.", "success");
 			form.reset();
+			window.location.assign("index.html");
 		} catch (error) {
 			renderErrorList(status, error.friendlyMessage + " " + error.message, window.AutosApi.getErrorDetails(error));
 		} finally {
