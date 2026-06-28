@@ -1,7 +1,7 @@
 (function () {
 	"use strict";
 
-	var CACHE_NAME = "autos-static-v13";
+	var CACHE_NAME = "autos-static-v14";
 	var STATIC_ASSETS = [
 		"/",
 		"/index.html",
@@ -24,6 +24,7 @@
 		"/assets/js/adminPanel.js",
 		"/assets/js/pwa.js",
 		"/assets/js/reports.js",
+		"/assets/vendor/bootstrap/bootstrap.bundle.min.js",
 		"/assets/img/brand/autos-logo.png",
 		"/assets/img/brand/pecinha-mascote.png",
 		"/assets/img/brand/pecinha-sentado.png",
