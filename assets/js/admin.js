@@ -3,25 +3,25 @@
 		loading: {
 			icon: "bi-arrow-repeat",
 			title: "Carregando informações administrativas",
-			text: "Estado visual para uso futuro durante consultas autorizadas pela API.",
+			text: "Aguarde enquanto os dados autorizados são carregados.",
 			className: ""
 		},
 		error: {
 			icon: "bi-exclamation-triangle",
 			title: "Não foi possível carregar os dados",
-			text: "Mensagem demonstrativa para falhas futuras de comunicação com a API.",
+			text: "Não foi possível carregar as informações administrativas agora.",
 			className: "is-error"
 		},
 		empty: {
 			icon: "bi-inbox",
 			title: "Nenhum item encontrado",
-			text: "Estado visual para quando não houver denúncias ou registros administrativos.",
+			text: "Não há denúncias ou registros administrativos para mostrar.",
 			className: "is-empty"
 		},
 		restricted: {
 			icon: "bi-shield-lock",
 			title: "Acesso restrito",
-			text: "A proteção real deve ser validada pelo back-end e pelos endpoints administrativos.",
+			text: "O acesso é validado pelo servidor e pelas permissões administrativas.",
 			className: "is-restricted"
 		}
 	};
@@ -67,7 +67,7 @@
 				return;
 			}
 
-			feedback.textContent = button.dataset.adminAction + " Nenhuma API foi chamada.";
+			feedback.textContent = button.dataset.adminAction + " Nenhuma ação foi enviada ao servidor.";
 		});
 	});
 })();

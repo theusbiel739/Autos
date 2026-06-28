@@ -41,7 +41,7 @@
 		var isLiked = button.dataset.liked === "true";
 
 		button.disabled = true;
-		window.AutosApi.setStatus(feedback, "Atualizando curtida...", "loading");
+		window.AutosApi.setStatus(feedback, "Atualizando sua curtida...", "loading");
 
 		try {
 			var response = await window.AutosApi.request("/posts/" + postId + "/likes", {
@@ -128,7 +128,7 @@
 		window.AutosApi.clearElement(container);
 
 		if (comments.length === 0) {
-			window.AutosApi.setStatus(status, "Nenhum comentário publicado neste post.", "empty");
+			window.AutosApi.setStatus(status, "Ainda não há comentários publicados neste post.", "empty");
 			return;
 		}
 
@@ -209,7 +209,7 @@
 
 			button.disabled = true;
 			button.textContent = "Enviando...";
-			window.AutosApi.setStatus(status, "Enviando comentário...", "loading");
+			window.AutosApi.setStatus(status, "Publicando comentário...", "loading");
 
 			try {
 				var response = await window.AutosApi.request("/posts/" + currentPostId + "/comments", {

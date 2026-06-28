@@ -22,7 +22,7 @@
 		var code = window.AutosApi.getErrorCode(error);
 
 		if (code === "REPORT_ALREADY_EXISTS") {
-			return "Sua denúncia já foi registrada.";
+			return "Esta denúncia já foi registrada.";
 		}
 
 		if (code === "CANNOT_REPORT_OWN_CONTENT") {
@@ -53,7 +53,7 @@
 			return Promise.resolve();
 		}
 
-		window.AutosApi.setStatus(status, "Carregando tipos de denúncia...", "loading");
+		window.AutosApi.setStatus(status, "Carregando motivos de denúncia...", "loading");
 
 		return getReportTypes().then(function (reportTypes) {
 			window.AutosApi.clearElement(select);
@@ -112,7 +112,7 @@
 		description.className = "form-control";
 		description.maxLength = 300;
 		description.rows = 3;
-		description.placeholder = "Inclua detalhes úteis para a análise, se desejar.";
+		description.placeholder = "Inclua detalhes úteis para a moderação, se desejar.";
 
 		var submit = document.createElement("button");
 		submit.className = "btn btn-outline-primary";
@@ -125,7 +125,7 @@
 
 		var note = document.createElement("p");
 		note.className = "form-hint";
-		note.textContent = "Para denunciar, entre na sua conta.";
+		note.textContent = "Para denunciar, entre com uma conta de usuário maior de 18 anos.";
 		note.hidden = true;
 
 		panel.append(selectLabel, select, descriptionLabel, description, submit, note, status);
@@ -145,13 +145,13 @@
 			event.preventDefault();
 
 			if (!select.value) {
-				window.AutosApi.setStatus(status, "Escolha um motivo para enviar a denúncia.", "error");
+				window.AutosApi.setStatus(status, "Escolha um motivo antes de enviar a denúncia.", "error");
 				return;
 			}
 
 			setButtonBusy(submit, true, "Enviando...", "Enviar denúncia");
 			updateAuthNote(note, null);
-			window.AutosApi.setStatus(status, "Enviando denúncia...", "loading");
+			window.AutosApi.setStatus(status, "Enviando denúncia para análise...", "loading");
 
 			window.AutosApi.request(buildReportPath(targetType, targetId), {
 				auth: true,
@@ -163,7 +163,7 @@
 				}
 			}).then(function (response) {
 				updateAuthNote(note, null);
-				window.AutosApi.setStatus(status, response.message || "Denúncia registrada com sucesso.", "success");
+				window.AutosApi.setStatus(status, response.message || "Denúncia enviada para análise.", "success");
 				panel.reset();
 			}).catch(function (error) {
 				updateAuthNote(note, error);

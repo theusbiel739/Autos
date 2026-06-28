@@ -36,11 +36,11 @@
 		title.textContent = newsItem.titulo || "Notícia sem título";
 
 		var summary = document.createElement("p");
-		summary.textContent = newsItem.resumo || "Resumo não informado.";
+		summary.textContent = newsItem.resumo || "Resumo não disponível.";
 
 		var date = document.createElement("p");
 		date.className = "card-meta";
-		date.textContent = window.AutosApi.formatDate(newsItem.publicada_em) || "Data não informada";
+		date.textContent = window.AutosApi.formatDate(newsItem.publicada_em) || "Data não disponível";
 
 		var link = document.createElement("a");
 		link.className = "read-link";
@@ -76,14 +76,14 @@
 		var isFullPage = list.dataset.newsPage === "true";
 
 		window.AutosApi.clearElement(list);
-		window.AutosApi.setStatus(status, "Carregando notícias...", "loading");
+		window.AutosApi.setStatus(status, "Carregando notícias selecionadas...", "loading");
 
 		try {
 			var response = await window.AutosApi.request("/news?limit=" + encodeURIComponent(limit));
 			var news = Array.isArray(response.news) ? response.news : [];
 
 			if (news.length === 0) {
-				window.AutosApi.setStatus(status, "Ainda não há notícias publicadas.", "empty");
+				window.AutosApi.setStatus(status, "Ainda não há notícias selecionadas para exibir.", "empty");
 				return;
 			}
 

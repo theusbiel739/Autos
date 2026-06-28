@@ -221,11 +221,11 @@
 
 	function getFriendlyAdminMessage(error) {
 		if (error && error.status === 401) {
-			return "Login necessário. Entre na sua conta para acessar o painel administrativo.";
+			return "Login necessário. Entre com uma conta autorizada para acessar o painel administrativo.";
 		}
 
 		if (error && error.status === 403) {
-			return "Acesso restrito a moderadores e administradores.";
+			return "Acesso restrito a contas de moderação e administração.";
 		}
 
 		return window.AutosApi.getErrorMessage(error);
@@ -269,7 +269,7 @@
 			emptyCell.textContent = "Nenhuma denúncia encontrada para este filtro.";
 			emptyRow.appendChild(emptyCell);
 			elements.body.appendChild(emptyRow);
-			setStatus(elements.status, "Nenhuma denúncia encontrada.", "empty");
+			setStatus(elements.status, "Nenhuma denúncia encontrada para este filtro.", "empty");
 		} else {
 			reports.forEach(function (report) {
 				var row = document.createElement("tr");
@@ -320,7 +320,7 @@
 		getElement("news-source-form").reset();
 		getElement("news-source-status-select").value = "ativa";
 		getElement("news-source-form-title").textContent = "Nova fonte RSS";
-		getElement("news-source-form-note").textContent = "Informe os dados da fonte para cadastrar uma nova origem de notícias.";
+		getElement("news-source-form-note").textContent = "Informe os dados da fonte para cadastrar uma origem confiável de notícias.";
 		setButtonContent(getElement("news-source-submit"), "bi bi-save", "Salvar fonte");
 		setStatus(getElement("news-source-form-feedback"), "", "loaded");
 	}
@@ -332,7 +332,7 @@
 		getElement("news-source-rss-url").value = source.url_rss || "";
 		getElement("news-source-status-select").value = normalizeSourceStatus(source.status);
 		getElement("news-source-form-title").textContent = "Editar fonte RSS";
-		getElement("news-source-form-note").textContent = "Atualize os dados permitidos para esta fonte.";
+		getElement("news-source-form-note").textContent = "Atualize os dados desta fonte de notícias.";
 		setButtonContent(getElement("news-source-submit"), "bi bi-save", "Atualizar fonte");
 		setStatus(getElement("news-source-form-feedback"), "", "loaded");
 	}
@@ -533,7 +533,7 @@
 		var endpointKind = kind === "comment" ? "comments" : "posts";
 
 		if (!reportId || (kind !== "post" && kind !== "comment")) {
-			setStatus(getElement("status-update-feedback"), "Selecione uma denúncia antes de atualizar.", "error");
+			setStatus(getElement("status-update-feedback"), "Selecione uma denúncia antes de atualizar o status.", "error");
 			return;
 		}
 
@@ -552,7 +552,7 @@
 				observacao: note || null
 			}
 		}).then(function (response) {
-			var message = response.message || "Status da denúncia atualizado com sucesso.";
+			var message = response.message || "Status da denúncia atualizado.";
 
 			setStatus(getElement("status-update-feedback"), message, "success");
 
@@ -592,7 +592,7 @@
 			method: method,
 			body: data
 		}).then(function (response) {
-			var message = response.message || "Fonte RSS salva com sucesso.";
+			var message = response.message || "Fonte RSS salva.";
 
 			resetSourceForm();
 			setStatus(getElement("news-source-form-feedback"), message, "success");
@@ -615,7 +615,7 @@
 		}).then(function (response) {
 			setStatus(
 				getElement("news-sources-status"),
-				response.message || "Status da fonte RSS atualizado com sucesso.",
+				response.message || "Status da fonte RSS atualizado.",
 				"success"
 			);
 			return loadNewsSources();
@@ -655,7 +655,7 @@
 		var button = getElement("sync-news-button");
 
 		button.disabled = true;
-		setStatus(getElement("sync-status"), "Sincronizando notícias RSS...", "loading");
+		setStatus(getElement("sync-status"), "Sincronizando notícias das fontes RSS...", "loading");
 		getElement("sync-result").hidden = true;
 		getElement("sync-errors").hidden = true;
 
@@ -712,7 +712,7 @@
 
 		bindEvents();
 		resetSourceForm();
-		setStatus(getElement("admin-global-status"), "Carregando dados administrativos...", "loading");
+		setStatus(getElement("admin-global-status"), "Carregando informações administrativas...", "loading");
 		Promise.all([loadReports("post"), loadReports("comment"), loadNewsSources()]).then(function () {
 			if (!state.hasLoadError) {
 				setStatus(getElement("admin-global-status"), "", "loaded");

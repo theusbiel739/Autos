@@ -36,11 +36,11 @@
 		}
 
 		if (status === 401) {
-			return "Você precisa entrar na sua conta para realizar esta ação.";
+			return "Entre na sua conta para realizar esta ação.";
 		}
 
 		if (status === 403) {
-			return "Você não tem permissão para realizar esta ação.";
+			return "Sua conta não tem permissão para realizar esta ação.";
 		}
 
 		if (status === 404) {
@@ -51,7 +51,7 @@
 			return "Esta ação já foi registrada.";
 		}
 
-		return "Não foi possível carregar os dados agora. Tente novamente em instantes.";
+		return "Não foi possível carregar as informações agora. Tente novamente em instantes.";
 	}
 
 	function getErrorCode(error) {

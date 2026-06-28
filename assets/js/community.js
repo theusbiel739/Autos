@@ -84,7 +84,7 @@
 		var errors = [];
 
 		if (!getTrimmedValue(form, "#post-conteudo")) {
-			errors.push("Informe o conteúdo do post.");
+			errors.push("Escreva o conteúdo do post.");
 		}
 
 		if (!getValue(form, "#post-categoria")) {
@@ -105,7 +105,7 @@
 		var total = Number(button.dataset.total || "0");
 
 		setButtonState(button, true);
-		window.AutosApi.setStatus(feedback, "Atualizando curtida...", "loading");
+		window.AutosApi.setStatus(feedback, "Atualizando sua curtida...", "loading");
 
 		try {
 			var response = await window.AutosApi.request("/posts/" + postId + "/likes", {
@@ -205,7 +205,7 @@
 			var posts = Array.isArray(response.posts) ? response.posts : [];
 
 			if (posts.length === 0) {
-				window.AutosApi.setStatus(status, "Ainda não há posts publicados.", "empty");
+				window.AutosApi.setStatus(status, "Ainda não há posts publicados na comunidade.", "empty");
 				return;
 			}
 
@@ -249,7 +249,7 @@
 			});
 
 			form.reset();
-			window.AutosApi.setStatus(status, response.message || "Post criado com sucesso.", "success");
+			window.AutosApi.setStatus(status, response.message || "Post publicado com sucesso.", "success");
 			await loadCommunityPosts();
 		} catch (error) {
 			renderErrorList(status, window.AutosApi.getErrorMessage(error), window.AutosApi.getErrorDetails(error));

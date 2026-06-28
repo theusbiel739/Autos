@@ -214,7 +214,7 @@
 		}
 
 		if (!legalAge || !legalAge.checked) {
-			errors.push("Confirme que você tem 18 anos ou mais.");
+			errors.push("Confirme que você tem 18 anos ou mais para interagir na comunidade.");
 		}
 
 		if (!terms || !terms.checked) {
@@ -234,7 +234,7 @@
 		}
 
 		setButtonBusy(button, true, "Entrando...", "Entrar");
-		window.AutosApi.setStatus(status, "Enviando dados de acesso...", "loading");
+		window.AutosApi.setStatus(status, "Verificando seus dados de acesso...", "loading");
 
 		try {
 			var response = await window.AutosApi.request("/auth/login", {
@@ -250,7 +250,7 @@
 			var sessionUser = await loadSession();
 
 			if (!sessionUser) {
-				window.AutosApi.setStatus(status, "Login recebido, mas não foi possível confirmar a sessão. Tente entrar novamente.", "error");
+				window.AutosApi.setStatus(status, "Recebemos o login, mas não foi possível confirmar a sessão. Tente entrar novamente.", "error");
 				return;
 			}
 
@@ -274,7 +274,7 @@
 		}
 
 		setButtonBusy(button, true, "Criando conta...", "Criar conta");
-		window.AutosApi.setStatus(status, "Enviando cadastro...", "loading");
+		window.AutosApi.setStatus(status, "Criando sua conta...", "loading");
 
 		try {
 			var response = await window.AutosApi.request("/auth/register", {

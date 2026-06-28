@@ -63,8 +63,8 @@
 							<p class="page-eyebrow">Painel administrativo</p>
 							<h1>Moderação e notícias do AUTÓS</h1>
 							<p class="lead">
-								Acompanhe denúncias registradas pela comunidade, atualize o status da análise
-								e execute a sincronização manual de notícias RSS.
+								Acompanhe denúncias da comunidade, atualize análises de moderação
+								e sincronize notícias de fontes RSS confiáveis.
 							</p>
 						</div>
 						<div class="col-lg-4">
@@ -85,7 +85,7 @@
 				<div class="container">
 					<div class="section-heading">
 						<p class="section-kicker">Resumo</p>
-						<h2 id="resumo-titulo">Fila administrativa carregada</h2>
+						<h2 id="resumo-titulo">Resumo da fila administrativa</h2>
 					</div>
 					<div class="admin-summary-grid">
 						<article class="admin-metric">
@@ -104,7 +104,7 @@
 							<i class="bi bi-hourglass-split" aria-hidden="true"></i>
 							<strong id="metric-pending-reports">0</strong>
 							<span>Pendentes na tela</span>
-							<p class="admin-note mb-0">Soma local de itens com status pendente.</p>
+							<p class="admin-note mb-0">Total exibido com status pendente.</p>
 						</article>
 						<article class="admin-metric">
 							<i class="bi bi-rss" aria-hidden="true"></i>
@@ -258,7 +258,7 @@
 									id="status-note"
 									maxlength="300"
 									rows="3"
-									placeholder="Inclua uma observação para o log de moderação."
+									placeholder="Inclua uma observação para o registro de moderação."
 									disabled
 								></textarea>
 							</div>
@@ -280,7 +280,7 @@
 								<p class="section-kicker">Fontes RSS</p>
 								<h2 id="fontes-rss-titulo">Gerenciamento de fontes</h2>
 								<p class="admin-note mb-0">
-									Cadastre, edite, ative e desative as fontes usadas pela sincronização manual.
+									Cadastre, edite, ative e desative fontes confiáveis usadas na sincronização manual.
 								</p>
 							</div>
 						</div>
@@ -311,7 +311,7 @@
 									<div>
 										<h3 id="news-source-form-title">Nova fonte RSS</h3>
 										<p class="admin-note mb-0" id="news-source-form-note">
-											Informe os dados da fonte para cadastrar uma nova origem de notícias.
+											Informe os dados da fonte para cadastrar uma origem confiável de notícias.
 										</p>
 									</div>
 									<button class="btn btn-outline-primary btn-sm" type="button" id="news-source-clear-button">
@@ -365,7 +365,7 @@
 								<p class="section-kicker">Notícias</p>
 								<h2 id="sincronizacao-rss-titulo">Sincronização manual RSS</h2>
 								<p class="admin-note mb-0">
-									Execute uma sincronização das fontes RSS ativas cadastradas no back-end.
+									Execute uma sincronização das fontes RSS ativas cadastradas.
 								</p>
 							</div>
 							<button class="btn btn-primary" type="button" id="sync-news-button">
