@@ -1,6 +1,8 @@
 (function () {
 	"use strict";
 
+	var currentUser = null;
+
 	function getTrimmedValue(form, selector) {
 		var field = form.querySelector(selector);
 
@@ -35,6 +37,143 @@
 		});
 
 		status.appendChild(list);
+	}
+
+	function dispatchAuthChanged() {
+		document.dispatchEvent(new CustomEvent("autos:auth-changed", {
+			detail: {
+				user: currentUser
+			}
+		}));
+	}
+
+	function setUser(user) {
+		currentUser = user || null;
+		renderAuthState();
+		dispatchAuthChanged();
+	}
+
+	function getUser() {
+		return currentUser;
+	}
+
+	function setHidden(elements, shouldHide) {
+		elements.forEach(function (element) {
+			element.hidden = shouldHide;
+		});
+	}
+
+	function renderAuthState() {
+		var isLoggedIn = Boolean(currentUser);
+
+		setHidden(Array.prototype.slice.call(document.querySelectorAll("[data-auth-guest]")), isLoggedIn);
+		setHidden(Array.prototype.slice.call(document.querySelectorAll("[data-auth-user]")), !isLoggedIn);
+	}
+
+	async function loadSession(options) {
+		var loadOptions = options || {};
+
+		if (!window.AutosApi) {
+			renderAuthState();
+			return null;
+		}
+
+		try {
+			var response = await window.AutosApi.request("/auth/me", {
+				auth: true,
+				credentials: "include"
+			});
+
+			setUser(response.user || null);
+			return currentUser;
+		} catch (error) {
+			if (!loadOptions.silent && error && error.status !== 401) {
+				throw error;
+			}
+
+			setUser(null);
+			return null;
+		}
+	}
+
+	function closeMobileMenu() {
+		var menu = document.getElementById("menuPrincipal");
+
+		if (!menu || !menu.classList.contains("show")) {
+			return;
+		}
+
+		if (window.bootstrap && window.bootstrap.Collapse) {
+			window.bootstrap.Collapse.getOrCreateInstance(menu).hide();
+			return;
+		}
+
+		menu.classList.remove("show");
+		var toggler = document.querySelector(".navbar-toggler[aria-controls='menuPrincipal']");
+
+		if (toggler) {
+			toggler.setAttribute("aria-expanded", "false");
+		}
+	}
+
+	function bindMobileMenu() {
+		var menu = document.getElementById("menuPrincipal");
+		var toggler = document.querySelector(".navbar-toggler[data-bs-target='#menuPrincipal']");
+
+		if (!menu || !toggler) {
+			return;
+		}
+
+		toggler.addEventListener("click", function () {
+			if (window.bootstrap && window.bootstrap.Collapse) {
+				return;
+			}
+
+			var willShow = !menu.classList.contains("show");
+			menu.classList.toggle("show", willShow);
+			toggler.setAttribute("aria-expanded", willShow ? "true" : "false");
+		});
+
+		menu.querySelectorAll("a, button").forEach(function (item) {
+			item.addEventListener("click", closeMobileMenu);
+		});
+	}
+
+	async function handleLogout(button) {
+		var defaultText = button ? button.textContent : "";
+
+		if (button) {
+			setButtonBusy(button, true, "Saindo...", defaultText);
+		}
+
+		try {
+			await window.AutosApi.request("/auth/logout", {
+				auth: true,
+				credentials: "include",
+				method: "POST"
+			});
+		} catch (error) {
+			if (error && error.status !== 401) {
+				throw error;
+			}
+		} finally {
+			setUser(null);
+
+			if (button) {
+				setButtonBusy(button, false, "Saindo...", defaultText);
+			}
+		}
+	}
+
+	function bindLogoutButtons() {
+		document.querySelectorAll("[data-auth-logout]").forEach(function (button) {
+			button.addEventListener("click", function (event) {
+				event.preventDefault();
+				handleLogout(button).catch(function () {
+					setUser(null);
+				});
+			});
+		});
 	}
 
 	function validateLogin(form) {
@@ -100,12 +239,20 @@
 		try {
 			var response = await window.AutosApi.request("/auth/login", {
 				auth: true,
+				credentials: "include",
 				method: "POST",
 				body: {
 					email: getTrimmedValue(form, "#email"),
 					senha: getValue(form, "#senha")
 				}
 			});
+
+			var sessionUser = await loadSession();
+
+			if (!sessionUser) {
+				window.AutosApi.setStatus(status, "Login recebido, mas não foi possível confirmar a sessão. Tente entrar novamente.", "error");
+				return;
+			}
 
 			window.AutosApi.setStatus(status, response.message || "Login realizado com sucesso.", "success");
 			form.reset();
@@ -178,5 +325,20 @@
 		}
 	}
 
-	document.addEventListener("DOMContentLoaded", bindAuthForms);
+	window.AutosAuth = {
+		getUser: getUser,
+		loadSession: loadSession,
+		setUser: setUser,
+		clearUser: function () {
+			setUser(null);
+		}
+	};
+
+	document.addEventListener("DOMContentLoaded", function () {
+		renderAuthState();
+		bindMobileMenu();
+		bindLogoutButtons();
+		bindAuthForms();
+		loadSession({ silent: true });
+	});
 })();

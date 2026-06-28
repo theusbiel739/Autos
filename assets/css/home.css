@@ -85,6 +85,49 @@ button:focus-visible,
 	color: var(--autos-blue);
 }
 
+@media (max-width: 991.98px) {
+	.navbar-collapse {
+		background: var(--autos-white);
+		max-height: calc(100vh - 4.5rem);
+		overflow-y: auto;
+		padding: 1rem 0;
+		position: relative;
+		z-index: 1040;
+	}
+
+	.navbar .btn {
+		margin-top: 0.5rem;
+		width: 100%;
+	}
+
+	.brand-hero-mascot-column {
+		display: flex;
+		flex: 0 0 100%;
+		justify-content: center;
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.hero-section .brand-hero-mascot {
+		display: block;
+		margin: 0.5rem auto 0;
+		max-width: clamp(7rem, 34vw, 10rem);
+		opacity: 1;
+		position: relative;
+		visibility: visible;
+		width: clamp(7rem, 34vw, 10rem);
+		z-index: 1;
+	}
+
+	.hero-section .brand-hero-mascot img {
+		display: block;
+		height: auto;
+		opacity: 1;
+		visibility: visible;
+		width: 100%;
+	}
+}
+
 .btn {
 	border-radius: 999px;
 	font-weight: 700;

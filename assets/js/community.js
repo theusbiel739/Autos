@@ -40,6 +40,65 @@
 		button.replaceChildren(icon, " ", isLiked ? "Remover curtida" : "Curtir", " (" + total + ")");
 	}
 
+	function getTrimmedValue(form, selector) {
+		var field = form.querySelector(selector);
+
+		return field ? field.value.trim() : "";
+	}
+
+	function getValue(form, selector) {
+		var field = form.querySelector(selector);
+
+		return field ? field.value : "";
+	}
+
+	function setPostFormVisibility() {
+		var panel = document.querySelector("[data-community-auth-panel]");
+		var isLoggedIn = Boolean(window.AutosAuth && window.AutosAuth.getUser());
+
+		if (panel) {
+			panel.hidden = !isLoggedIn;
+		}
+	}
+
+	function renderErrorList(status, message, details) {
+		window.AutosApi.setStatus(status, message, "error");
+
+		if (!details.length) {
+			return;
+		}
+
+		var list = document.createElement("ul");
+		list.className = "form-feedback-list";
+
+		details.forEach(function (detail) {
+			var item = document.createElement("li");
+			item.textContent = detail;
+			list.appendChild(item);
+		});
+
+		status.appendChild(list);
+	}
+
+	function validateCreatePost(form) {
+		var errors = [];
+
+		if (!getTrimmedValue(form, "#post-conteudo")) {
+			errors.push("Informe o conteúdo do post.");
+		}
+
+		if (!getValue(form, "#post-categoria")) {
+			errors.push("Selecione uma categoria.");
+		}
+
+		return errors;
+	}
+
+	function setSubmitBusy(button, isBusy) {
+		button.disabled = isBusy;
+		button.textContent = isBusy ? "Publicando..." : "Publicar";
+	}
+
 	async function toggleLike(button, feedback) {
 		var postId = button.dataset.postId;
 		var isLiked = button.dataset.liked === "true";
@@ -159,5 +218,66 @@
 		}
 	}
 
-	document.addEventListener("DOMContentLoaded", loadCommunityPosts);
+	async function handleCreatePost(form, status) {
+		var button = form.querySelector("button[type='submit']");
+		var errors = validateCreatePost(form);
+		var marcadorId = getValue(form, "#post-marcador");
+
+		if (errors.length > 0) {
+			renderErrorList(status, "Confira os campos antes de publicar.", errors);
+			return;
+		}
+
+		setSubmitBusy(button, true);
+		window.AutosApi.setStatus(status, "Publicando post...", "loading");
+
+		try {
+			var body = {
+				conteudo: getTrimmedValue(form, "#post-conteudo"),
+				categoria_id: getValue(form, "#post-categoria")
+			};
+
+			if (marcadorId) {
+				body.marcador_id = marcadorId;
+			}
+
+			var response = await window.AutosApi.request("/posts", {
+				auth: true,
+				credentials: "include",
+				method: "POST",
+				body: body
+			});
+
+			form.reset();
+			window.AutosApi.setStatus(status, response.message || "Post criado com sucesso.", "success");
+			await loadCommunityPosts();
+		} catch (error) {
+			renderErrorList(status, window.AutosApi.getErrorMessage(error), window.AutosApi.getErrorDetails(error));
+		} finally {
+			setSubmitBusy(button, false);
+		}
+	}
+
+	function bindCreatePostForm() {
+		var form = document.querySelector("[data-create-post-form]");
+
+		if (!form || !window.AutosApi) {
+			return;
+		}
+
+		var status = form.querySelector("[data-create-post-status]");
+
+		form.addEventListener("submit", function (event) {
+			event.preventDefault();
+			handleCreatePost(form, status);
+		});
+	}
+
+	document.addEventListener("autos:auth-changed", setPostFormVisibility);
+
+	document.addEventListener("DOMContentLoaded", function () {
+		setPostFormVisibility();
+		bindCreatePostForm();
+		loadCommunityPosts();
+	});
 })();

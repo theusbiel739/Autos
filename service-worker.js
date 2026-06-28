@@ -1,7 +1,7 @@
 (function () {
 	"use strict";
 
-	var CACHE_NAME = "autos-static-v12";
+	var CACHE_NAME = "autos-static-v13";
 	var STATIC_ASSETS = [
 		"/",
 		"/index.html",

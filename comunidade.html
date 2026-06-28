@@ -32,7 +32,8 @@
 							<li class="nav-item"><a class="nav-link" href="noticias.html">Notícias</a></li>
 							<li class="nav-item"><a class="nav-link" href="comunidade.html" aria-current="page">Comunidade</a></li>
 							<li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
-							<li class="nav-item"><a class="btn btn-outline-primary ms-lg-3" href="login.html">Entrar</a></li>
+							<li class="nav-item" data-auth-guest><a class="btn btn-outline-primary ms-lg-3" href="login.html">Entrar</a></li>
+							<li class="nav-item" data-auth-user hidden><button class="btn btn-outline-primary ms-lg-3" type="button" data-auth-logout>Sair</button></li>
 						</ul>
 					</div>
 				</div>
@@ -55,6 +56,40 @@
 					<div class="section-heading">
 						<p class="section-kicker">Feed da comunidade</p>
 						<h2 id="feed-titulo">Posts publicados, sem imagens</h2>
+					</div>
+					<div class="form-panel community-post-form" data-community-auth-panel hidden>
+						<h3 class="h4">Criar post</h3>
+						<form action="#" method="post" data-create-post-form novalidate>
+							<div class="api-state" data-create-post-status aria-live="polite"></div>
+							<div class="mb-3">
+								<label class="form-label" for="post-conteudo">Conteúdo</label>
+								<textarea class="form-control" id="post-conteudo" name="conteudo" rows="4" maxlength="500" required></textarea>
+								<p class="form-hint">Até 500 caracteres.</p>
+							</div>
+							<div class="row g-3">
+								<div class="col-md-6">
+									<label class="form-label" for="post-categoria">Categoria</label>
+									<select class="form-control" id="post-categoria" name="categoria_id" required>
+										<option value="">Selecione</option>
+										<option value="1">Dica</option>
+										<option value="2">Experiência</option>
+										<option value="3">Pergunta</option>
+										<option value="4">Desabafo</option>
+										<option value="5">Informação</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label class="form-label" for="post-marcador">Marcador</label>
+									<select class="form-control" id="post-marcador" name="marcador_id">
+										<option value="">Nenhum</option>
+										<option value="1">Funcionou para mim</option>
+										<option value="2">Estou buscando ajuda</option>
+										<option value="3">Compartilhando informação</option>
+									</select>
+								</div>
+							</div>
+							<button class="btn btn-primary mt-3" type="submit">Publicar</button>
+						</form>
 					</div>
 					<div class="api-state" data-posts-status aria-live="polite"></div>
 					<div class="api-state" data-community-feedback aria-live="polite"></div>
@@ -96,6 +131,7 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/api.js"></script>
+		<script src="assets/js/auth.js"></script>
 		<script src="assets/js/community.js"></script>
 		<script src="assets/js/pwa.js"></script>
 	</body>

@@ -740,6 +740,10 @@
 	margin-top: 0.75rem;
 }
 
+.community-post-form {
+	margin-bottom: 1.5rem;
+}
+
 .form-hint {
 	color: var(--autos-muted);
 	font-size: 0.92rem;

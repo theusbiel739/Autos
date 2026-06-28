@@ -47,8 +47,11 @@
 							<li class="nav-item"><a class="nav-link" href="noticias.html">Notícias</a></li>
 							<li class="nav-item"><a class="nav-link" href="comunidade.html">Comunidade</a></li>
 							<li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
-							<li class="nav-item">
+							<li class="nav-item" data-auth-guest>
 								<a class="btn btn-outline-primary ms-lg-3" href="login.html">Entrar</a>
+							</li>
+							<li class="nav-item" data-auth-user hidden>
+								<button class="btn btn-outline-primary ms-lg-3" type="button" data-auth-logout>Sair</button>
 							</li>
 						</ul>
 					</div>
@@ -72,10 +75,10 @@
 							</p>
 							<div class="hero-actions">
 								<a class="btn btn-primary btn-lg" href="comunidade.html">Conhecer a comunidade</a>
-								<a class="btn btn-light btn-lg" href="cadastro.html">Criar conta</a>
+								<a class="btn btn-light btn-lg" href="cadastro.html" data-auth-guest>Criar conta</a>
 							</div>
 						</div>
-						<div class="col-lg-4 d-none d-lg-block">
+						<div class="col-lg-4 brand-hero-mascot-column">
 							<div class="brand-hero-mascot">
 								<img
 									src="assets/img/brand/pecinha-mascote.png"
@@ -274,7 +277,7 @@
 							</h2>
 							<div class="hero-actions">
 								<a class="btn btn-primary btn-lg" href="comunidade.html">Explorar comunidade</a>
-								<a class="btn btn-light btn-lg" href="cadastro.html">Criar minha conta</a>
+								<a class="btn btn-light btn-lg" href="cadastro.html" data-auth-guest>Criar minha conta</a>
 							</div>
 						</div>
 					</div>
@@ -312,6 +315,7 @@
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		></script>
 		<script src="assets/js/api.js"></script>
+		<script src="assets/js/auth.js"></script>
 		<script src="assets/js/news.js"></script>
 		<script src="assets/js/pwa.js"></script>
 	</body>

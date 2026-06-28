@@ -28,7 +28,8 @@
 							<li class="nav-item"><a class="nav-link" href="noticias.html" aria-current="page">Notícias</a></li>
 							<li class="nav-item"><a class="nav-link" href="comunidade.html">Comunidade</a></li>
 							<li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
-							<li class="nav-item"><a class="btn btn-outline-primary ms-lg-3" href="login.html">Entrar</a></li>
+							<li class="nav-item" data-auth-guest><a class="btn btn-outline-primary ms-lg-3" href="login.html">Entrar</a></li>
+							<li class="nav-item" data-auth-user hidden><button class="btn btn-outline-primary ms-lg-3" type="button" data-auth-logout>Sair</button></li>
 						</ul>
 					</div>
 				</div>
@@ -86,6 +87,7 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/api.js"></script>
+		<script src="assets/js/auth.js"></script>
 		<script src="assets/js/news.js"></script>
 	</body>
 </html>
