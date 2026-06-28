@@ -19,15 +19,19 @@ const staticPages = new Set([
   'artigos.html',
   'cadastro.html',
   'comunidade.html',
+  'contato.html',
+  'diretrizes.html',
   'index.html',
   'informacoes.html',
   'login.html',
   'noticias.html',
   'perfil.html',
   'post.html',
+  'privacidade.html',
   'produto.html',
   'sobre.html',
-  'sobrenos.html'
+  'sobrenos.html',
+  'termos.html'
 ]);
 
 app.use(helmet());

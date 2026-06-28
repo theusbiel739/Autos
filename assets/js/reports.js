@@ -32,6 +32,14 @@
 		return window.AutosApi.getErrorMessage(error);
 	}
 
+	function updateAuthNote(note, error) {
+		if (!note) {
+			return;
+		}
+
+		note.hidden = !(error && error.status === 401);
+	}
+
 	function createOption(value, text) {
 		var option = document.createElement("option");
 		option.value = value;
@@ -118,6 +126,7 @@
 		var note = document.createElement("p");
 		note.className = "form-hint";
 		note.textContent = "Para denunciar, entre na sua conta.";
+		note.hidden = true;
 
 		panel.append(selectLabel, select, descriptionLabel, description, submit, note, status);
 		wrapper.append(toggle, panel);
@@ -141,6 +150,7 @@
 			}
 
 			setButtonBusy(submit, true, "Enviando...", "Enviar denúncia");
+			updateAuthNote(note, null);
 			window.AutosApi.setStatus(status, "Enviando denúncia...", "loading");
 
 			window.AutosApi.request(buildReportPath(targetType, targetId), {
@@ -152,9 +162,11 @@
 					descricao: description.value.trim() || null
 				}
 			}).then(function (response) {
+				updateAuthNote(note, null);
 				window.AutosApi.setStatus(status, response.message || "Denúncia registrada com sucesso.", "success");
 				panel.reset();
 			}).catch(function (error) {
+				updateAuthNote(note, error);
 				window.AutosApi.setStatus(status, getReportMessage(error), "error");
 			}).finally(function () {
 				setButtonBusy(submit, false, "Enviando...", "Enviar denúncia");
