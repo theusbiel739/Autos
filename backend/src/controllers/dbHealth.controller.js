@@ -9,14 +9,7 @@ async function check(req, res) {
       database: 'connected'
     });
   } catch (error) {
-    console.error('Database health check failed:', {
-      code: error.code,
-      message: error.message,
-      hostname: error.hostname,
-      address: error.address,
-      errno: error.errno,
-      stack: error.stack
-    });
+    console.error('Database health check failed:', error.code || error.message);
 
     return res.status(503).json({
       status: 'error',
